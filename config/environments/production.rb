@@ -28,6 +28,7 @@ Ticketie::Application.configure do
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
+  config.assets.precompile += ['application.js', 'application.css', 'bootstrap-email.css', 'bootstrap.css']
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -59,7 +60,6 @@ Ticketie::Application.configure do
 
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-  # config.assets.precompile += %w( search.js )
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
