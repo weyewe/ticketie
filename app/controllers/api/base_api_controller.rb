@@ -282,6 +282,7 @@ class Api::BaseApiController < ApplicationController
   end
   
   def format_date_friendly( datetime ) 
+    puts ">>>>>>>>>> format date friendly : #{datetime}\n"*15
     return nil if not datetime.present?
      
     

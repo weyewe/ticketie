@@ -9,15 +9,14 @@ Ticketie::Application.routes.draw do
     put 'update_password' , :to => "passwords#update" , :as => :update_password
     get 'search_role' => 'roles#search', :as => :search_role, :method => :get
     get 'search_user' => 'app_users#search', :as => :search_user, :method => :get
-    get 'search_job_code' => 'job_codes#search', :as => :search_job_code, :method => :get
+    get 'search_type' => 'types#search', :as => :search_type, :method => :get
     
+    # master data 
     resources :app_users
-    resources :job_codes 
-    resources :employees 
+    resources :customers 
+    resources :types  
+    resources :items 
     
-    resources :jobs
-    resources :drafts
-    resources :job_summaries
     
   end
   

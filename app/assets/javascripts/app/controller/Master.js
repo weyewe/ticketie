@@ -67,13 +67,59 @@ Ext.define("AM.controller.Master", {
 				]
 			}, 
 			{ 
-				text:'JobCode', 
-				viewClass:'AM.view.master.JobCode', 
+				text:'Customer', 
+				viewClass:'AM.view.master.Customer', 
 				leaf:true, 
 				iconCls:'text',
 				conditions : [
 				{
-					controller : 'job_codes',
+					controller : 'customers',
+					action : 'index'
+				}
+				]
+			},
+			{ 
+				text:'Type', 
+				viewClass:'AM.view.master.Type', 
+				leaf:true, 
+				iconCls:'text',
+				conditions : [
+					{
+						controller : 'types',
+						action : 'index'
+					}
+				]
+			},
+			{ 
+				text:'Item Registration', 
+				viewClass:'AM.view.master.Item', 
+				leaf:true, 
+				iconCls:'text',
+				conditions : [
+					{
+						controller : 'items',
+						action : 'index'
+					}
+				]
+			},
+    ]
+	},
+	
+	customerSetupFolder : {
+		text 			: "CustomerSetup", 
+		viewClass : '',
+		iconCls		: 'text-folder', 
+    expanded	: true,
+		children 	: [
+        
+			{ 
+				text:'Item', 
+				viewClass:'AM.view.master.Item', 
+				leaf:true, 
+				iconCls:'text',
+				conditions : [
+				{
+					controller : 'items',
 					action : 'index'
 				}
 				]
@@ -89,6 +135,7 @@ Ext.define("AM.controller.Master", {
 		
 		me.folderList = [
 			this.setupFolder,
+			this.customerSetupFolder
 			// this.inventoryFolder,
 			// this.reportFolder,
 			// this.projectReportFolder

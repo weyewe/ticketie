@@ -115,12 +115,6 @@ Ext.onReady(function(){
 				Ext.Ajax.extraParams = { auth_token: auth_token_value };
 			}
 			
-			 
-			
-			
-	
-	
-	
 			
 		// include the csrf prevention 
 	    var content, metatag;
@@ -131,6 +125,9 @@ Ext.onReady(function(){
 	      return options.headers["X-CSRF-Token"] = content;
 	    }
 	  }, this);
+
+
+
 
 	Ext.Ajax.on('requestcomplete', function(conn, response, options, eOpts){
 		// console.log("on request complete");

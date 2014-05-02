@@ -1,8 +1,8 @@
-Ext.define('AM.view.master.customer.Form', {
+Ext.define('AM.view.master.type.Form', {
   extend: 'Ext.window.Window',
-  alias : 'widget.customerform',
+  alias : 'widget.typeform',
 
-  title : 'Add / Edit Customer',
+  title : 'Add / Edit Type',
   layout: 'fit',
 	width	: 500,
   autoShow: true,  // does it need to be called?
@@ -11,10 +11,8 @@ Ext.define('AM.view.master.customer.Form', {
 // if autoShow == true.. on instantiation, will automatically be called 
 	
   initComponent: function() {
-	
-	
-	
-	  
+	 
+		
     this.items = [{
       xtype: 'form',
 			msgTarget	: 'side',
@@ -33,30 +31,13 @@ Ext.define('AM.view.master.customer.Form', {
 				{
 	        xtype: 'textfield',
 	        name : 'name',
-	        fieldLabel: ' Name PT Customer'
+	        fieldLabel: 'Tipe Item Support'
 	      },
 				{
 					xtype: 'textfield',
-					name : 'address',
-					fieldLabel: 'Alamat'
-				},
-				{
-					xtype: 'textfield',
-					name : 'pic',
-					fieldLabel: 'Nama PIC'
-				},
-				{
-					xtype: 'textfield',
-					name : 'contact',
-					fieldLabel: 'Kontak PIC'
-				},
-				{
-					xtype: 'textfield',
-					name : 'email',
-					fieldLabel: 'Email PIC'
-				},
-			
-				
+					name : 'description',
+					fieldLabel: 'Deskripsi'
+				}
 			]
     }];
 
@@ -74,6 +55,19 @@ Ext.define('AM.view.master.customer.Form', {
 
 	setComboBoxData : function( record){
 	
+		var role_id = record.get("role_id");
+		var comboBox = this.down('form').getForm().findField('role_id'); 
+		var me = this; 
+		var store = comboBox.store; 
+		store.load({
+			params: {
+				selected_id : role_id 
+			},
+			callback : function(records, options, success){
+				me.setLoading(false);
+				comboBox.setValue( role_id );
+			}
+		});
 	}
 });
 

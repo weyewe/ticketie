@@ -55,3 +55,61 @@ data_entry_role = Role.create!(
 
 
   
+  customer_1 = Customer.create_object(
+    :name        => "mcnell", 
+    :address     => " kalibesar no 50 ", 
+    :pic         => " WILLY ", 
+    :contact     => "082125583534", 
+    :email       => "walawee@gmail.com", 
+  )
+  
+  customer_2 = Customer.create_object(
+    :name        => "toll", 
+    :address     => " kalibesar no 50 ", 
+    :pic         => " WILLY ", 
+    :contact     => "082125583534", 
+    :email       => "toll@gmail.com", 
+  )
+  
+  customer_3 = Customer.create_object(
+    :name        => "penanshin", 
+    :address     => " kalibesar no 50 ", 
+    :pic         => " WILLY ", 
+    :contact     => "082125583534", 
+    :email       => "toll@gmail.com", 
+  )
+  
+  customer_array = [customer_1, customer_2, customer_3 ]
+  
+  type_pc = Type.create_object(
+    :name => "PC",
+    :description => "Seperangkat komputer: mouse, CPU, Monitor, Speaker (optional)"
+  )
+  
+  type_laptop = Type.create_object(
+    :name => "Laptop",
+    :description => "Awesome"
+  )
+  
+  type_array = [type_pc, type_laptop]
+  
+  
+  (1..3).each do |x|
+    customer_array.each do |customer_object|
+      type_array.each do |type_object|
+        
+        Item.create_object(
+          :customer_id              => customer_object.id,
+          :type_id                  => type_object.id,
+          :description              => "#{customer_object.name} #{type_object.name} #{x} ",
+          :manufactured_at          => DateTime.new(2011, 10,10), 
+          :warranty_expiry_date     => DateTime.new(2013, 10,10)
+        )
+      end
+    end
+  end
+  
+  puts "Total item: #{Item.all.count}"
+  
+  
+  

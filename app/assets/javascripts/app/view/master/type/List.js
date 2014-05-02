@@ -1,32 +1,30 @@
-Ext.define('AM.view.master.customer.List' ,{
+Ext.define('AM.view.master.type.List' ,{
   	extend: 'Ext.grid.Panel',
-  	alias : 'widget.customerlist',
+  	alias : 'widget.typelist',
 
-  	store: 'Customers', 
+  	store: 'Types', 
  
 
 	initComponent: function() {
 		this.columns = [
 			{ header: 'ID', dataIndex: 'id'},
 			{ header: 'Nama',  dataIndex: 'name', flex: 1},
-			{	header: 'Email', dataIndex: 'email', flex: 1 },
-			{	header: 'Alamat', dataIndex: 'address', flex: 1 },
-			{	header: 'Contact', dataIndex: 'contact', flex: 1 },
+			{	header: 'Deskripsi', dataIndex: 'description', flex: 1 } 
 		];
 
 		this.addObjectButton = new Ext.Button({
-			text: 'Add Customer',
+			text: 'Add Type',
 			action: 'addObject'
 		});
 
 		this.editObjectButton = new Ext.Button({
-			text: 'Edit Customer',
+			text: 'Edit Type',
 			action: 'editObject',
 			disabled: true
 		});
 
 		this.deleteObjectButton = new Ext.Button({
-			text: 'Delete Customer',
+			text: 'Delete Type',
 			action: 'deleteObject',
 			disabled: true
 		});

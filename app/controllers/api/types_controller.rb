@@ -1,43 +1,43 @@
-class Api::CustomersController < Api::BaseApiController
+class Api::TypesController < Api::BaseApiController
   
   def index
     
     if params[:livesearch].present? 
       livesearch = "%#{params[:livesearch]}%"
-      @objects = Customer.where{
-        (is_deleted.eq false) & 
-        (
-          (name =~  livesearch )  
-        )
-        
-      }.page(params[:page]).per(params[:limit]).order("id DESC")
-      
-      @total = Customer.where{
+      @objects = Type.where{
         (is_deleted.eq false) & 
         (
           (name =~  livesearch ) 
         )
         
+      }.page(params[:page]).per(params[:limit]).order("id DESC")
+      
+      @total = Type.where{
+        (is_deleted.eq false) & 
+        (
+          (name =~  livesearch )  
+        )
+        
       }.count
     else
-      @objects = Customer.active_objects.page(params[:page]).per(params[:limit]).order("id DESC")
-      @total = Customer.active_objects.count
+      @objects = Type.active_objects.page(params[:page]).per(params[:limit]).order("id DESC")
+      @total = Type.active_objects.count
     end
     
     
     
-    # render :json => { :customers => @objects , :total => @total, :success => true }
+    # render :json => { :types => @objects , :total => @total, :success => true }
   end
 
   def create
-    @object = Customer.create_object( params[:customer] )  
+    @object = Type.create_object( params[:type] )  
     
     
  
     if @object.errors.size == 0 
       render :json => { :success => true, 
-                        :customers => [@object] , 
-                        :total => Customer.active_objects.count }  
+                        :types => [@object] , 
+                        :total => Type.active_objects.count }  
     else
       msg = {
         :success => false, 
@@ -52,13 +52,13 @@ class Api::CustomersController < Api::BaseApiController
 
   def update
     
-    @object = Customer.find_by_id params[:id] 
-    @object.update_object( params[:customer])
+    @object = Type.find_by_id params[:id] 
+    @object.update_object( params[:type])
      
     if @object.errors.size == 0 
       render :json => { :success => true,   
-                        :customers => [@object],
-                        :total => Customer.active_objects.count  } 
+                        :types => [@object],
+                        :total => Type.active_objects.count  } 
     else
       msg = {
         :success => false, 
@@ -72,13 +72,13 @@ class Api::CustomersController < Api::BaseApiController
   end
 
   def destroy
-    @object = Customer.find(params[:id])
+    @object = Type.find(params[:id])
     @object.delete_object
 
     if @object.is_deleted
-      render :json => { :success => true, :total => Customer.active_objects.count }  
+      render :json => { :success => true, :total => Type.active_objects.count }  
     else
-      render :json => { :success => false, :total => Customer.active_objects.count }  
+      render :json => { :success => false, :total => Type.active_objects.count }  
     end
   end
   
@@ -93,22 +93,22 @@ class Api::CustomersController < Api::BaseApiController
     # on PostGre SQL, it is ignoring lower case or upper case 
     
     if  selected_id.nil?
-      @objects = Customer.where{ (name =~ query)   
+      @objects = Type.where{ (name =~ query)   
                               }.
                         page(params[:page]).
                         per(params[:limit]).
                         order("id DESC")
                         
-      @total = Customer.where{ (name =~ query)  
+      @total = Type.where{ (name =~ query)  
                               }.count
     else
-      @objects = Customer.where{ (id.eq selected_id)  
+      @objects = Type.where{ (id.eq selected_id)  
                               }.
                         page(params[:page]).
                         per(params[:limit]).
                         order("id DESC")
    
-      @total = Customer.where{ (id.eq selected_id)   
+      @total = Type.where{ (id.eq selected_id)   
                               }.count 
     end
     

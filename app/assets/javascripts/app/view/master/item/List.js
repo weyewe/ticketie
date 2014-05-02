@@ -1,33 +1,41 @@
-Ext.define('AM.view.master.customer.List' ,{
+Ext.define('AM.view.master.item.List' ,{
   	extend: 'Ext.grid.Panel',
-  	alias : 'widget.customerlist',
+  	alias : 'widget.itemlist',
 
-  	store: 'Customers', 
+  	store: 'Items', 
  
 
 	initComponent: function() {
 		this.columns = [
-			{ header: 'ID', dataIndex: 'id'},
-			{ header: 'Nama',  dataIndex: 'name', flex: 1},
-			{	header: 'Email', dataIndex: 'email', flex: 1 },
-			{	header: 'Alamat', dataIndex: 'address', flex: 1 },
-			{	header: 'Contact', dataIndex: 'contact', flex: 1 },
+			// { header: 'Member', dataIndex: 'member_name' , flex : 1 },
+			{ header: 'Code',  dataIndex: 'code', flex : 1  },
+			{ header: 'Description',  dataIndex: 'description', flex : 1  },
+			{ header: 'Manufactured',  dataIndex: 'manufactured_at', flex : 1  },
+			{ header: 'Warranty Expiration Date',  dataIndex: 'warranty_expiry_date', flex : 1  },
+			
 		];
 
 		this.addObjectButton = new Ext.Button({
-			text: 'Add Customer',
-			action: 'addObject'
+			text: 'Add',
+			action: 'addObject',
+			disabled: true
 		});
 
 		this.editObjectButton = new Ext.Button({
-			text: 'Edit Customer',
+			text: 'Edit',
 			action: 'editObject',
 			disabled: true
 		});
 
 		this.deleteObjectButton = new Ext.Button({
-			text: 'Delete Customer',
+			text: 'Delete',
 			action: 'deleteObject',
+			disabled: true
+		});
+		
+		this.deactivateObjectButton = new Ext.Button({
+			text: 'Deactivate',
+			action: 'deactivateObject',
 			disabled: true
 		});
 		
@@ -41,7 +49,8 @@ Ext.define('AM.view.master.customer.List' ,{
 
 
 
-		this.tbar = [this.addObjectButton, this.editObjectButton, this.deleteObjectButton, this.searchField ];
+		this.tbar = [this.addObjectButton, this.editObjectButton, this.deleteObjectButton,
+		  			'-', this.deactivateObjectButton ];
 		this.bbar = Ext.create("Ext.PagingToolbar", {
 			store	: this.store, 
 			displayInfo: true,
@@ -57,14 +66,24 @@ Ext.define('AM.view.master.customer.List' ,{
 	getSelectedObject: function() {
 		return this.getSelectionModel().getSelection()[0];
 	},
+	
+	enableAddButton: function(){
+		this.addObjectButton.enable();
+	},
+	disableAddButton : function(){
+		this.addObjectButton.disable();
+	},
 
 	enableRecordButtons: function() {
 		this.editObjectButton.enable();
 		this.deleteObjectButton.enable();
+		this.deactivateObjectButton.enable();
+		
 	},
 
 	disableRecordButtons: function() {
 		this.editObjectButton.disable();
 		this.deleteObjectButton.disable();
+		this.deactivateObjectButton.disable();
 	}
 });

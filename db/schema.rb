@@ -11,17 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430074614) do
+ActiveRecord::Schema.define(version: 20140430100629) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "categories", force: true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "contract_maintenances", force: true do |t|
+    t.integer  "customer_id"
+    t.string   "name"
+    t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -32,11 +30,24 @@ ActiveRecord::Schema.define(version: 20140430074614) do
   end
 
   create_table "customers", force: true do |t|
+    t.string   "name"
+    t.text     "address"
+    t.text     "pic"
+    t.text     "contact"
+    t.string   "email"
+    t.boolean  "is_deleted", default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "items", force: true do |t|
+    t.integer  "customer_id"
+    t.integer  "type_id"
+    t.string   "code"
+    t.text     "description"
+    t.datetime "manufactured_at"
+    t.datetime "warranty_expiry_date"
+    t.boolean  "is_deleted",           default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -46,6 +57,14 @@ ActiveRecord::Schema.define(version: 20140430074614) do
     t.string   "title",       null: false
     t.text     "description", null: false
     t.json     "the_role",    null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "types", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.boolean  "is_deleted",  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

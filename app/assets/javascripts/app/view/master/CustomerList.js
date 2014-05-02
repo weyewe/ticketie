@@ -1,36 +1,24 @@
-Ext.define('AM.view.master.customer.List' ,{
+Ext.define('AM.view.master.CustomerList' ,{
   	extend: 'Ext.grid.Panel',
-  	alias : 'widget.customerlist',
+  	alias : 'widget.mastercustomerList',
 
   	store: 'Customers', 
- 
+   
 
 	initComponent: function() {
 		this.columns = [
-			{ header: 'ID', dataIndex: 'id'},
-			{ header: 'Nama',  dataIndex: 'name', flex: 1},
-			{	header: 'Email', dataIndex: 'email', flex: 1 },
-			{	header: 'Alamat', dataIndex: 'address', flex: 1 },
-			{	header: 'Contact', dataIndex: 'contact', flex: 1 },
+		
+			{
+				xtype : 'templatecolumn',
+				text : "Customer",
+				flex : 1,
+				tpl : '<b>{name}</b>' + '<br />' + 
+							'Jumlah Meeting: <b>{number_of_meetings}</b>' + '<br />'  + 
+							'Jumlah Pengumpulan: <b>{number_of_collections}</b>'
+			}, 
 		];
 
-		this.addObjectButton = new Ext.Button({
-			text: 'Add Customer',
-			action: 'addObject'
-		});
-
-		this.editObjectButton = new Ext.Button({
-			text: 'Edit Customer',
-			action: 'editObject',
-			disabled: true
-		});
-
-		this.deleteObjectButton = new Ext.Button({
-			text: 'Delete Customer',
-			action: 'deleteObject',
-			disabled: true
-		});
-		
+	 
 		this.searchField = new Ext.form.field.Text({
 			name: 'searchField',
 			hideLabel: true,
@@ -41,7 +29,7 @@ Ext.define('AM.view.master.customer.List' ,{
 
 
 
-		this.tbar = [this.addObjectButton, this.editObjectButton, this.deleteObjectButton, this.searchField ];
+		this.tbar = [this.searchField ];
 		this.bbar = Ext.create("Ext.PagingToolbar", {
 			store	: this.store, 
 			displayInfo: true,

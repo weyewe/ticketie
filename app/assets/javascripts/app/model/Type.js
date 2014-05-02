@@ -1,13 +1,10 @@
-Ext.define('AM.model.Customer', {
+Ext.define('AM.model.Type', {
   	extend: 'Ext.data.Model',
   	fields: [
     	{ name: 'id', type: 'int' },
 			{ name: 'name', type: 'string' },
-			{ name: 'address', type: 'string' },
-			
-    	{ name: 'pic', type: 'string' } ,
-			{ name: 'contact', type: 'string' } ,
-			{ name: 'email', type: 'string' }
+			{ name: 'description', type: 'string' },
+			 
   	],
 
 	 
@@ -15,19 +12,19 @@ Ext.define('AM.model.Customer', {
 
    
   	idProperty: 'id' ,proxy: {
-			url: 'api/customers',
+			url: 'api/types',
 			type: 'rest',
 			format: 'json',
 
 			reader: {
-				root: 'customers',
+				root: 'types',
 				successProperty: 'success',
 				totalProperty : 'total'
 			},
 
 			writer: {
 				getRecordData: function(record) {
-					return { customer : record.data };
+					return { type : record.data };
 				}
 			}
 		}
