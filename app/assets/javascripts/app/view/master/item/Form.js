@@ -75,7 +75,7 @@ Ext.define('AM.view.master.item.Form', {
 					xtype: 'displayfield',
 					fieldLabel: 'Code',
 					name: 'code' ,
-					value : '10' 
+					value : '' 
 				},
 				{
 					fieldLabel: 'Support Item Category',

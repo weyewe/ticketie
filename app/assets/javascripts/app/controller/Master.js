@@ -89,19 +89,7 @@ Ext.define("AM.controller.Master", {
 						action : 'index'
 					}
 				]
-			},
-			{ 
-				text:'Item Registration', 
-				viewClass:'AM.view.master.Item', 
-				leaf:true, 
-				iconCls:'text',
-				conditions : [
-					{
-						controller : 'items',
-						action : 'index'
-					}
-				]
-			},
+			} 
     ]
 	},
 	
@@ -118,10 +106,22 @@ Ext.define("AM.controller.Master", {
 				leaf:true, 
 				iconCls:'text',
 				conditions : [
-				{
-					controller : 'items',
-					action : 'index'
-				}
+					{
+						controller : 'items',
+						action : 'index'
+					}
+				]
+			},
+			{ 
+				text:'Contract', 
+				viewClass:'AM.view.master.Contract', 
+				leaf:true, 
+				iconCls:'text',
+				conditions : [
+					{
+						controller : 'contract_maintenances',
+						action : 'index'
+					}
 				]
 			},
     ]

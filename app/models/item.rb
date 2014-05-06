@@ -32,8 +32,20 @@ class Item < ActiveRecord::Base
      
     
     if new_object.save
-      item_count = new_object.customer.items.count 
-      new_object.code = "#{new_object.customer_id}/#{new_object.type.id}/#{item_count}"
+      
+      now = DateTime.now
+      year = now.year
+      month = now.month 
+      
+      
+      beginning_of_the_year_datetime = now.beginning_of_year
+      end_of_the_year_datetime = (now + 1.year).beginning_of_year - 1.second
+      
+      total_item_created_in_current_year = new_object.customer.items.where(
+        :created_at => beginning_of_the_year_datetime..end_of_the_year_datetime
+      ).count 
+      
+      new_object.code = "#{year}/#{month}/#{new_object.customer_id}/#{total_item_created_in_current_year}"
       new_object.save 
     end
     

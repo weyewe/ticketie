@@ -20,6 +20,10 @@ ActiveRecord::Schema.define(version: 20140430100629) do
     t.integer  "customer_id"
     t.string   "name"
     t.text     "description"
+    t.string   "code"
+    t.datetime "started_at"
+    t.datetime "finished_at"
+    t.boolean  "is_deleted",  default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

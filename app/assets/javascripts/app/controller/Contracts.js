@@ -1,69 +1,69 @@
-Ext.define('AM.controller.Items', {
+Ext.define('AM.controller.Contracts', {
   extend: 'Ext.app.Controller',
 
-  stores: ['Customers', 'Items'],
-  models: ['Item'],
+  stores: ['Customers', 'Contracts'],
+  models: ['Contract'],
 
   views: [
-    'master.item.List',
-    'master.item.Form',
-		'master.Item',
+    'master.contract.List',
+    'master.contract.Form',
+		'master.Contract',
 		'master.CustomerList'
   ],
 
   	refs: [
 		{
 			ref : "wrapper",
-			selector : "itemProcess"
+			selector : "contractProcess"
 		},
 		{
 			ref : 'parentList',
-			selector : 'itemProcess mastercustomerList'
+			selector : 'contractProcess mastercustomerList'
 		},
 		{
 			ref: 'list',
-			selector: 'itemlist'
+			selector: 'contractlist'
 		},
 		{
 			ref : 'searchField',
-			selector: 'itemlist textfield[name=searchField]'
+			selector: 'contractlist textfield[name=searchField]'
 		}
 	],
 
   init: function() {
     this.control({
-			'itemProcess mastercustomerList' : {
+			'contractProcess mastercustomerList' : {
 				afterrender : this.loadParentObjectList,
 				selectionchange: this.parentSelectionChange,
 			},
 	
-      'itemlist': {
-        itemdblclick: this.editObject,
+      'contractlist': {
+        contractdblclick: this.editObject,
         selectionchange: this.selectionChange,
 				destroy : this.onDestroy
 				// afterrender : this.loadObjectList,
       },
-      'itemform button[action=save]': {
+      'contractform button[action=save]': {
         click: this.updateObject
       },
-      'itemlist button[action=addObject]': {
+      'contractlist button[action=addObject]': {
         click: this.addObject
       },
-      'itemlist button[action=editObject]': {
+      'contractlist button[action=editObject]': {
         click: this.editObject
       },
-      'itemlist button[action=deleteObject]': {
+      'contractlist button[action=deleteObject]': {
         click: this.deleteObject
       },
-			'itemProcess mastercustomerList textfield[name=searchField]': {
+			'contractProcess mastercustomerList textfield[name=searchField]': {
         change: this.liveSearch
       },
 
-			'itemlist button[action=deactivateObject]': {
+			'contractlist button[action=deactivateObject]': {
         click: this.deactivateObject
 			}	,
 			
-			'deactivateitemform button[action=confirmDeactivate]' : {
+			'deactivatecontractform button[action=confirmDeactivate]' : {
 				click : this.executeDeactivate
 			},
 		
@@ -71,7 +71,7 @@ Ext.define('AM.controller.Items', {
   },
 	onDestroy: function(){
 		// console.log("on Destroy the savings_entries list ");
-		this.getItemsStore().loadData([],false);
+		this.getContractsStore().loadData([],false);
 	},
 
 	liveSearch : function(grid, newValue, oldValue, options){
@@ -90,7 +90,7 @@ Ext.define('AM.controller.Items', {
 	},
 	
 	loadParentObjectList: function(me){
-		console.log("after render from item");
+		console.log("gonna load parent object list ");
 		// console.log("after render the group_loan list");
 		me.getStore().getProxy().extraParams =  {};
 		me.getStore().load(); 
@@ -101,7 +101,7 @@ Ext.define('AM.controller.Items', {
     
 		var parentObject  = this.getParentList().getSelectedObject();
 		if( parentObject) {
-			var view = Ext.widget('itemform');
+			var view = Ext.widget('contractform');
 			view.show();
 			view.setParentData(parentObject);
 		}
@@ -110,7 +110,7 @@ Ext.define('AM.controller.Items', {
   editObject: function() {
 		var me = this; 
     var record = this.getList().getSelectedObject();
-    var view = Ext.widget('itemform');
+    var view = Ext.widget('contractform');
 
 		view.setComboBoxData( record );
 
@@ -126,7 +126,7 @@ Ext.define('AM.controller.Items', {
 		var parentList = this.getParentList();
 		var wrapper = this.getWrapper();
 
-    var store = this.getItemsStore();
+    var store = this.getContractsStore();
     var record = form.getRecord();
     var values = form.getValues();
 
@@ -169,7 +169,7 @@ Ext.define('AM.controller.Items', {
 		}else{
 			//  no record at all  => gonna create the new one 
 			var me  = this; 
-			var newObject = new AM.model.Item( values ) ;
+			var newObject = new AM.model.Contract( values ) ;
 			
 			// learnt from here
 			// http://www.sencha.com/forum/showthread.php?137580-ExtJS-4-Sync-and-success-failure-processing
@@ -203,7 +203,7 @@ Ext.define('AM.controller.Items', {
     var record = this.getList().getSelectedObject();
 
     if (record) {
-      var store = this.getItemsStore();
+      var store = this.getContractsStore();
       store.remove(record);
       store.sync();
 // to do refresh programmatically
@@ -224,7 +224,7 @@ Ext.define('AM.controller.Items', {
 
 	deactivateObject: function(){
 		// console.log("mark as Deceased is clicked");
-		var view = Ext.widget('deactivateitemform');
+		var view = Ext.widget('deactivatecontractform');
 		var record = this.getList().getSelectedObject();
 		view.setParentData( record );
 		// view.down('form').getForm().findField('c').setValue(record.get('deceased_at')); 
@@ -237,7 +237,7 @@ Ext.define('AM.controller.Items', {
     var form = win.down('form');
 		var list = this.getList();
 
-    var store = this.getItemsStore();
+    var store = this.getContractsStore();
 		var record = this.getList().getSelectedObject();
     var values = form.getValues();
  

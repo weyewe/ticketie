@@ -12,9 +12,8 @@ Ext.define('AM.view.master.CustomerList' ,{
 				xtype : 'templatecolumn',
 				text : "Customer",
 				flex : 1,
-				tpl : '<b>{name}</b>' + '<br />' + 
-							'Jumlah Meeting: <b>{number_of_meetings}</b>' + '<br />'  + 
-							'Jumlah Pengumpulan: <b>{number_of_collections}</b>'
+				tpl : '<b>{name}</b>' 
+				
 			}, 
 		];
 

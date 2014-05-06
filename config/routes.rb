@@ -16,6 +16,7 @@ Ticketie::Application.routes.draw do
     resources :customers 
     resources :types  
     resources :items 
+    resources :contract_maintenances 
     
     
   end
