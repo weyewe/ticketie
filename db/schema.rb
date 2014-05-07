@@ -11,10 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140430100629) do
+ActiveRecord::Schema.define(version: 20140506101327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "contract_items", force: true do |t|
+    t.integer  "contract_maintenance_id"
+    t.integer  "customer_id"
+    t.integer  "item_id"
+    t.boolean  "is_deleted",              default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "contract_maintenances", force: true do |t|
     t.integer  "customer_id"
@@ -24,11 +33,6 @@ ActiveRecord::Schema.define(version: 20140430100629) do
     t.datetime "started_at"
     t.datetime "finished_at"
     t.boolean  "is_deleted",  default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "contracted_items", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end

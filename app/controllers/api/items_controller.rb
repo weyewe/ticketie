@@ -105,13 +105,19 @@ class Api::ItemsController < Api::BaseApiController
     # on PostGre SQL, it is ignoring lower case or upper case 
     
     if  selected_id.nil?
-      @objects = Item.where{ (name =~ query)   
+      @objects = Item.joins(:type).where{ 
+                            (type.name =~ query)   | 
+                            (code =~ query)  | 
+                            (description =~ query)
                               }.
                         page(params[:page]).
                         per(params[:limit]).
                         order("id DESC")
                         
-      @total = Item.where{ (name =~ query)  
+      @total = Item.joins(:type).where{ 
+              (type.name =~ query)   | 
+              (code =~ query)  | 
+              (description =~ query)
                               }.count
     else
       @objects = Item.where{ (id.eq selected_id)  
@@ -125,6 +131,6 @@ class Api::ItemsController < Api::BaseApiController
     end
     
     
-    render :json => { :records => @objects , :total => @total, :success => true }
+    # render :json => { :records => @objects , :total => @total, :success => true }
   end
 end

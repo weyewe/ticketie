@@ -10,6 +10,7 @@ Ticketie::Application.routes.draw do
     get 'search_role' => 'roles#search', :as => :search_role, :method => :get
     get 'search_user' => 'app_users#search', :as => :search_user, :method => :get
     get 'search_type' => 'types#search', :as => :search_type, :method => :get
+    get 'search_item' => 'items#search', :as => :search_item, :method => :get
     
     # master data 
     resources :app_users
@@ -17,6 +18,7 @@ Ticketie::Application.routes.draw do
     resources :types  
     resources :items 
     resources :contract_maintenances 
+    resources :contract_items 
     
     
   end

@@ -3,6 +3,9 @@ Ext.define('AM.model.Contract', {
   	fields: [
     	{ name: 'id', type: 'int' },
 			{ name: 'customer_id', type: 'int' },
+			{ name: 'customer_name', type: 'string' },
+			
+			{ name: 'contract_maintenance_id', type: 'string' },
 			{ name: 'code', type: 'string' } ,
     	{ name: 'name', type: 'string' } ,
 			{ name: 'description', type: 'string' } ,

@@ -6,7 +6,7 @@ class Api::ContractMaintenancesController < Api::BaseApiController
     
     if params[:livesearch].present? 
       livesearch = "%#{params[:livesearch]}%"
-      @objects = ContractMaintenance.where{ 
+      @objects = ContractMaintenance.active_objects.where{ 
         (
           (name =~  livesearch ) | 
           (code =~  livesearch )
@@ -14,7 +14,7 @@ class Api::ContractMaintenancesController < Api::BaseApiController
         
       }.page(params[:page]).per(params[:limit]).order("id DESC")
       
-      @total = ContractMaintenance.where{ 
+      @total = ContractMaintenance.active_objects.where{ 
         (
           (name =~  livesearch ) | 
           (code =~  livesearch )
@@ -25,10 +25,10 @@ class Api::ContractMaintenancesController < Api::BaseApiController
       
     elsif params[:parent_id].present?
       # @group_loan = GroupLoan.find_by_id params[:parent_id]
-      @objects = ContractMaintenance.
+      @objects = ContractMaintenance.active_objects.joins(:customer).
                   where(:customer_id => params[:parent_id]).
                   page(params[:page]).per(params[:limit]).order("id DESC")
-      @total = ContractMaintenance.where(:customer_id => params[:parent_id]).count 
+      @total = ContractMaintenance.active_objects.where(:customer_id => params[:parent_id]).count 
     else
       @objects = []
       @total = 0 
@@ -105,22 +105,22 @@ class Api::ContractMaintenancesController < Api::BaseApiController
     # on PostGre SQL, it is ignoring lower case or upper case 
     
     if  selected_id.nil?
-      @objects = ContractMaintenance.where{ (name =~ query)   
+      @objects = ContractMaintenance.active_objects.where{ (name =~ query)   
                               }.
                         page(params[:page]).
                         per(params[:limit]).
                         order("id DESC")
                         
-      @total = ContractMaintenance.where{ (name =~ query)  
+      @total = ContractMaintenance.active_objects.where{ (name =~ query)  
                               }.count
     else
-      @objects = ContractMaintenance.where{ (id.eq selected_id)  
+      @objects = ContractMaintenance.active_objects.where{ (id.eq selected_id)  
                               }.
                         page(params[:page]).
                         per(params[:limit]).
                         order("id DESC")
    
-      @total = ContractMaintenance.where{ (id.eq selected_id)   
+      @total = ContractMaintenance.active_objects.where{ (id.eq selected_id)   
                               }.count 
     end
     

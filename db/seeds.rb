@@ -127,3 +127,17 @@ data_entry_role = Role.create!(
   puts "Total Contract Maintenance #{ContractMaintenance.all.count}"
   
   
+  customer_array.each do |customer|
+    customer.items.each do |item|
+      first_contract_maintenance = customer.contract_maintenances.first 
+      ContractItem.create_object(
+        :item_id => item.id ,
+        :customer_id => customer.id,
+        :contract_maintenance_id => first_contract_maintenance.id 
+      )
+    end
+  end
+  
+  puts "Total ContractItem: #{ContractItem.all.count}"
+  
+  

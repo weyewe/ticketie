@@ -8,6 +8,7 @@ json.contracts @objects do |object|
  
 	 
 	json.customer_id		object.customer_id
+	json.customer_name object.customer.name 
  
 	json.name 								object.name
 	json.description 					object.description
