@@ -17,12 +17,12 @@ Ext.define('AM.view.Content', {
 				xtype : 'container'
 			},
 			{
-				html : "Operation",
-				// xtype : 'operationProcessPanel'
-				xtype : 'container'
+				// html : "Operation",
+				xtype : 'operationProcessPanel'
+				// xtype : 'container'
 			},
 			{
-				html : "Master",
+				// html : "Master",
 				// xtype : 'container'
 				xtype : 'masterProcessPanel'
 			},

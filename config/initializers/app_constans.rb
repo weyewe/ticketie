@@ -95,3 +95,21 @@ USER_JOB_STATUS = {
   :observer => 1 , 
   :worker => 2 
 }
+
+MAINTENANCE_CASE ={
+  :scheduled => 1, 
+  :emergency => 2 
+}
+
+
+DIAGNOSIS_CASE = {
+  :all_ok => 1 ,
+  :require_fix => 2,
+  :require_replacement => 3  
+}
+
+SOLUTION_CASE = {
+  :normal => 0 ,
+  :pending => 1,
+  :solved =>  2    # 
+}

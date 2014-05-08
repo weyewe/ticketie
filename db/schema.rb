@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140506101327) do
+ActiveRecord::Schema.define(version: 20140508082817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,36 @@ ActiveRecord::Schema.define(version: 20140506101327) do
     t.datetime "manufactured_at"
     t.datetime "warranty_expiry_date"
     t.boolean  "is_deleted",           default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "maintenance_schedules", force: true do |t|
+    t.integer  "contract_maintenance_id"
+    t.datetime "maintenance_date"
+    t.integer  "customer_id"
+    t.boolean  "is_deleted"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "maintenances", force: true do |t|
+    t.integer  "maintenance_contract_id"
+    t.integer  "maintenance_schedule_id"
+    t.integer  "contract_item_id"
+    t.integer  "item_id"
+    t.integer  "customer_id"
+    t.integer  "user_id"
+    t.datetime "request_date"
+    t.text     "complaint"
+    t.integer  "case",                    default: 1
+    t.text     "diagnosis"
+    t.integer  "diagnosis_case",          default: 1
+    t.datetime "inspection_date"
+    t.text     "solution"
+    t.integer  "solution_case",           default: 0
+    t.datetime "finish_date"
+    t.boolean  "is_confirmed",            default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
