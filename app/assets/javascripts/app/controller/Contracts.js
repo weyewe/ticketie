@@ -77,21 +77,10 @@ Ext.define('AM.controller.Contracts', {
         click: this.updateObject
       },
 
-			'contractlist button[action=collectObject]': {
-        click: this.collectObject
+			'contractlist button[action=deleteObject]': {
+        click: this.deleteObject
 			}	,
-			
-			'collectcontractform button[action=collect]' : {
-				click : this.executeCollect
-			},
-			
-			'contractlist button[action=confirmObject]': {
-        click: this.confirmObject
-			}	,
-			
-			'confirmcontractform button[action=confirm]' : {
-				click : this.executeConfirm
-			},
+			  
 			
 			
 			// related to the savings entry
@@ -117,6 +106,23 @@ Ext.define('AM.controller.Contracts', {
 	      click: this.deleteSavingsObject
 	    },
     });
+  },
+
+	deleteObject: function() {
+    var record = this.getList().getSelectedObject();
+
+    if (record) {
+      var store = this.getContractsStore();
+      store.remove(record);
+      store.sync();
+// to do refresh programmatically
+			this.getList().query('pagingtoolbar')[0].doRefresh();
+			
+			// childList.getStore().loadData([], false);
+			
+			
+    }
+
   },
 
 	onDestroy: function(){
