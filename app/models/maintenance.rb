@@ -17,7 +17,24 @@ class Maintenance < ActiveRecord::Base
     new_object.complaint_date   = params[:complaint_date  ] 
     new_object.complaint      = params[:complaint  ] 
     new_object.complaint_case = params[:complaint_case]
-    new_object.save
+    
+    
+    if new_object.save
+      
+      now = DateTime.now
+      year = now.year
+      month = now.month 
+      
+      beginning_of_the_month_datetime = now.beginning_of_month
+      end_of_the_month_datetime = (now + 1.month).beginning_of_month - 1.second
+      
+      total_maintenance_created_in_current_month = new_object.class.where(
+        :created_at => beginning_of_the_month_datetime..end_of_the_month_datetime
+      ).count 
+      
+      new_object.code = "#{year}/#{month}/#{new_object.customer_id}/#{total_maintenance_created_in_current_month}"
+      new_object.save 
+    end
     
     return new_object
   end
