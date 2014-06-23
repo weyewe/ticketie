@@ -112,32 +112,19 @@ data_entry_role = Role.create!(
   puts "Total item: #{Item.all.count}"
   
   
-  (1..3).each do |x|
-    customer_array.each do |customer_object|
-      ContractMaintenance.create_object(
-        :customer_id  =>  customer_object.id, 
-        :description  =>  "description #{customer_object.id}, count #{x}", 
-        :name         =>  "name #{x*customer_object.id}", 
-        :started_at   =>  DateTime.new(2011, 10,10), 
-        :finished_at  =>  DateTime.new(2014, 10,10)
+   
+   customer = Customer.first
+   customer.items.each do |item|
+     Maintenance.create_object(
+       :item_id        => item.id, 
+       :customer_id    => customer.id           ,
+       :user_id        => User.first.id         ,
+       :complaint_date => DateTime.now          ,
+       :complaint      => "awesome complaint"   ,
+       :complaint_case => MAINTENANCE_CASE[:emergency]
       )
-    end
-  end
-  
-  puts "Total Contract Maintenance #{ContractMaintenance.all.count}"
+   end
   
   
-  customer_array.each do |customer|
-    customer.items.each do |item|
-      first_contract_maintenance = customer.contract_maintenances.first 
-      ContractItem.create_object(
-        :item_id => item.id ,
-        :customer_id => customer.id,
-        :contract_maintenance_id => first_contract_maintenance.id 
-      )
-    end
-  end
-  
-  puts "Total ContractItem: #{ContractItem.all.count}"
-  
+  puts "Total maintenance: #{Maintenance.all.count}"
   

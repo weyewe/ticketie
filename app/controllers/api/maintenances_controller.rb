@@ -44,6 +44,9 @@ class Api::MaintenancesController < Api::BaseApiController
   def create
     @object = Maintenance.create_object( params[:item] )  
     
+    params[:maintenance][:complaint_date] =  parse_date( params[:maintenance][:complaint_date] )
+    params[:maintenance][:diagnosis_date] =  parse_date( params[:maintenance][:diagnosis_date] )
+    params[:maintenance][:solution_date] =  parse_date( params[:maintenance][:solution_date] )
     
  
     if @object.errors.size == 0 

@@ -27,7 +27,6 @@ class Maintenance < ActiveRecord::Base
   
   def update_object(params)
     self.item_id        = params[:item_id]
-    self.customer_id    = params[:customer_id    ]
     self.user_id        = params[:user_id]
     self.complaint_date   = params[:complaint_date  ] 
     self.complaint      = params[:complaint  ] 
@@ -56,5 +55,30 @@ class Maintenance < ActiveRecord::Base
   
   def self.active_objects
     self.where(:is_deleted => false )
+  end
+  
+  def complaint_case_text
+    return "" if not  complaint_case.present? 
+    
+    return "Scheduled" if complaint_case == MAINTENANCE_CASE[:scheduled]
+    return "Emergency" if complaint_case == MAINTENANCE_CASE[:emergency]  
+  end
+  
+  def diagnosis_case_text
+    return "" if not diagnosis_case.present? 
+    
+   
+    
+    return "OK" if diagnosis_case == DIAGNOSIS_CASE[:all_ok]
+    return "Fix" if diagnosis_case == DIAGNOSIS_CASE[:require_fix]
+    return "Replacement" if diagnosis_case == DIAGNOSIS_CASE[:require_replacement]
+  end
+  
+  def solution_case_text
+    return "" if not solution_case.present? 
+   
+    return "Normal" if solution_case == SOLUTION_CASE[:normal]
+    return "Pending" if solution_case == SOLUTION_CASE[:pending]
+    return "Solved" if solution_case == SOLUTION_CASE[:solved]
   end
 end
