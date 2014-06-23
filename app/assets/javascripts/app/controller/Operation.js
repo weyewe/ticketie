@@ -55,13 +55,13 @@ Ext.define("AM.controller.Operation", {
 		children 	: [
         
 			{ 
-				text:'Schedule Maintenance', 
-				viewClass:'AM.view.operation.User', 
+				text:'Maintenance', 
+				viewClass:'AM.view.operation.Maintenance', 
 				leaf:true, 
 				iconCls:'text',
 				conditions : [
 				{
-					controller : 'users',
+					controller : 'maintenances',
 					action : 'index'
 				}
 				]
