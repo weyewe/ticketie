@@ -17,7 +17,7 @@ class CreateMaintenances < ActiveRecord::Migration
       t.text :diagnosis 
       t.integer :diagnosis_case , :default => DIAGNOSIS_CASE[:all_ok]
       t.datetime :diagnosis_date
-      t.boolean :is_diagnosed, :default => true 
+      t.boolean :is_diagnosed, :default => false  
       
       
       t.text :solution 

@@ -6,7 +6,7 @@ class Api::MaintenancesController < Api::BaseApiController
     
     if params[:livesearch].present? 
       livesearch = "%#{params[:livesearch]}%"
-      @objects = Maintenance.where{ 
+      @objects = Maintenance.active_objects.where{ 
         (
           (name =~  livesearch ) | 
           (code =~  livesearch )
@@ -14,7 +14,7 @@ class Api::MaintenancesController < Api::BaseApiController
         
       }.page(params[:page]).per(params[:limit]).order("id DESC")
       
-      @total = Maintenance.where{ 
+      @total = Maintenance.active_objects.where{ 
         (
           (name =~  livesearch ) | 
           (code =~  livesearch )
@@ -42,16 +42,44 @@ class Api::MaintenancesController < Api::BaseApiController
   end
 
   def create
-    @object = Maintenance.create_object( params[:item] )  
     
-    params[:maintenance][:complaint_date] =  parse_date( params[:maintenance][:complaint_date] )
-    params[:maintenance][:diagnosis_date] =  parse_date( params[:maintenance][:diagnosis_date] )
-    params[:maintenance][:solution_date] =  parse_date( params[:maintenance][:solution_date] )
+    params[:maintenance][:complaint_date] =  parse_datetime_from_client_booking( params[:maintenance][:complaint_date] )
+    params[:maintenance][:diagnosis_date] =  parse_datetime_from_client_booking( params[:maintenance][:diagnosis_date] )
+    params[:maintenance][:solution_date] =  parse_datetime_from_client_booking( params[:maintenance][:solution_date] )
+    
+    
+    @object = Maintenance.create_object( params[:maintenance] )  
+    
+    
     
  
     if @object.errors.size == 0 
       render :json => { :success => true, 
-                        :items => [@object] , 
+                        :maintenances => [
+                          :id 							=>  	@object.id    ,
+                        	:item_name 			 										 =>   @object.item.code                                ,
+                        	:item_id                   => @object.item.id , 
+                        	:customer_name 						 =>   @object.customer.name  ,
+                        	:customer_id					 =>   @object.customer.id   ,
+                        	:user_id             =>   @object.user.id , 
+                        	:user_name 										 =>   @object.user.name,
+                        	:complaint_date 										 =>   format_date_friendly(@object.complaint_date)    ,
+                        	:complaint 							 =>   @object.complaint ,
+                        	:complaint_case 									 =>    @object.complaint_case ,
+                        	:complaint_case_text 											 =>   @object.complaint_case_text,
+                        	:diagnosis_date 											 =>   format_date_friendly( @object.diagnosis_date )   ,
+                        	:diagnosis =>   @object.diagnosis     ,
+                          :diagnosis_case =>   @object.diagnosis_case,                            # 
+                          :diagnosis_case_text                               => @object.diagnosis_case_text,
+                          :is_diagnosed   => @object.is_diagnosed,
+                          :solution_date                           =>  format_date_friendly( @object.solution_date ),
+                          :solution      => @object.solution ,
+                        	:solution_case => @object.solution_case,
+                        	:solution_case_text => @object.solution_case_text,
+                        	:is_solved => @object.is_solved,
+                        	:is_confirmed => @object.is_confirmed,
+                          :is_deleted => @object.is_deleted
+                          ] , 
                         :total => Maintenance.active_objects.count }  
     else
       msg = {
@@ -170,10 +198,17 @@ class Api::MaintenancesController < Api::BaseApiController
     @object = Maintenance.find(params[:id])
     @object.delete_object
 
-    if @object.is_deleted
+    if @object.is_deleted and @object.errors.size == 0
       render :json => { :success => true, :total => Maintenance.active_objects.count }  
     else
-      render :json => { :success => false, :total => Maintenance.active_objects.count }  
+      msg = {
+        :success => false, 
+        :message => {
+          :errors => extjs_error_format( @object.errors )  
+        }
+      }
+      
+      render :json => msg
     end
   end
   

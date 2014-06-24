@@ -10,6 +10,8 @@ Ext.define('AM.view.operation.maintenance.List' ,{
 			{ header: 'Code',  dataIndex: 'code', flex: 1},
 			{	header: 'Employee', dataIndex: 'user_name', flex: 1 },
 			{	header: 'Item', dataIndex: 'item_code', flex: 1 },
+			{	header: 'Complaint Date', dataIndex: 'complaint_date', flex: 1 },
+			{	header: 'Complaint', dataIndex: 'complaint', flex: 1 },
 		];
 
 		this.addObjectButton = new Ext.Button({
@@ -26,6 +28,24 @@ Ext.define('AM.view.operation.maintenance.List' ,{
 		this.deleteObjectButton = new Ext.Button({
 			text: 'Delete',
 			action: 'deleteObject',
+			disabled: true
+		});
+		
+		this.diagnoseObjectButton = new Ext.Button({
+			text: 'Diagnose',
+			action: 'diagnoseObject',
+			disabled: true
+		});
+		
+		this.solveObjectButton = new Ext.Button({
+			text: 'Solve',
+			action: 'solveObject',
+			disabled: true
+		});
+		
+		this.confirmObjectButton = new Ext.Button({
+			text: 'Confirm',
+			action: 'confirmObject',
 			disabled: true
 		});
 		

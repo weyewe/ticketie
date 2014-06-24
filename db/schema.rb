@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 20140508082817) do
     t.text     "diagnosis"
     t.integer  "diagnosis_case", default: 1
     t.datetime "diagnosis_date"
-    t.boolean  "is_diagnosed",   default: true
+    t.boolean  "is_diagnosed",   default: false
     t.text     "solution"
     t.integer  "solution_case",  default: 0
     t.datetime "solution_date"

@@ -93,38 +93,41 @@ Ext.define('AM.controller.Maintenances', {
 	loadParentObjectList: function(me){
 		// console.log("after render from item in Maintenances");
 		// console.log("after render the group_loan list in Maintenances");
+		 
+		
+		this.getMaintenancesStore().loadData([],false);
+		
 		me.getStore().getProxy().extraParams =  {};
-		me.getStore().load(); 
+		me.getStore().load();
+		
+		this.getList().disableAddButton();
 	},
 
   addObject: function() {
-		console.log("Inside addOBject)");
     
 		var parentObject  = this.getParentList().getSelectedObject();
-		console.log("The parentObject:");
-		console.log( parentObject );
 		
 		if( parentObject) {
-			console.log("The view");
 			var view = Ext.widget('maintenanceform');
-			
-			console.log( view );
+			view.setParentData( parentObject) ;
 			view.show();
 			// view.setParentData(parentObject);
 		}
   },
 
   editObject: function() {
-		console.log("Inside the editOBject");
 		var me = this; 
     var record = this.getList().getSelectedObject();
-    var view = Ext.widget('maintenanceform');
 
-		view.setComboBoxData( record );
-
-		
-
-    view.down('form').loadRecord(record);
+		if( record){
+			var parentObject  = this.getParentList().getSelectedObject();
+	    var view = Ext.widget('maintenanceform');
+			view.setParentData( parentObject) ;
+			view.setComboBoxData( record );
+			view.down('form').loadRecord(record);
+			
+		}
+    
   },
 
   updateObject: function(button) {

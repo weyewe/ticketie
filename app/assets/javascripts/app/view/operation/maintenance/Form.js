@@ -31,7 +31,7 @@ Ext.define('AM.view.operation.maintenance.Form', {
 			fields	: [
 			 		{
 						name : 'item_code',
-						mapping : "name"
+						mapping : "code"
 					} ,
 					{
 						name : 'item_description',
@@ -41,7 +41,11 @@ Ext.define('AM.view.operation.maintenance.Form', {
 					{
 						name : 'item_id',
 						mapping : "id"
-					}  
+					}  ,
+					{
+						name : 'type_name',
+						mapping : "type_name"
+					} ,
 			],
 			
 		 
@@ -117,7 +121,7 @@ Ext.define('AM.view.operation.maintenance.Form', {
 				
 				{
 	        xtype: 'customdatetimefield',
-	        name : 'complaint_datetime',
+	        name : 'complaint_date',
 	        fieldLabel: ' Waktu complaint',
 					dateCfg : {
 						format: 'Y-m-d'
@@ -129,32 +133,77 @@ Ext.define('AM.view.operation.maintenance.Form', {
 					}
 				},
 				
-				// {
-				// 	fieldLabel: 'Kasus Complaint',
-				// 	xtype: 'combo',
-				// 	queryMode: 'remote',
-				// 	forceSelection: true, 
-				// 	displayField : 'complaint_case_text',
-				// 	valueField : 'complaint_case',
-				// 	pageSize : 5,
-				// 	minChars : 1, 
-				// 	allowBlank : false, 
-				// 	triggerAction: 'all',
-				// 	store : localJsonStoreComplaintCase, 
-				// 	listConfig : {
-				// 		getInnerTpl: function(){
-				// 			return  	'<div data-qtip="{complaint_case_text}">' +  
-				// 									'<div class="combo-name">{complaint_case_text}</div>' +
-				// 			 					'</div>';
-				// 		}
-				// 	},
-				// 	name : 'complaint_case' 
-				// },
+				{
+					fieldLabel: 'Kasus Complaint',
+					xtype: 'combo',
+					queryMode: 'remote',
+					forceSelection: true, 
+					displayField : 'complaint_case_text',
+					valueField : 'complaint_case',
+					pageSize : 5,
+					minChars : 1, 
+					allowBlank : false, 
+					triggerAction: 'all',
+					store : localJsonStoreComplaintCase, 
+					listConfig : {
+						getInnerTpl: function(){
+							return  	'<div data-qtip="{complaint_case_text}">' +  
+													'<div class="combo-name">{complaint_case_text}</div>' +
+							 					'</div>';
+						}
+					},
+					name : 'complaint_case' 
+				},
 				
 				{
 					xtype: 'textarea',
 					name : 'complaint',
 					fieldLabel: 'Detail Complaint'
+				},
+				
+				{
+					fieldLabel: 'Karyawan Pelaksana',
+					xtype: 'combo',
+					queryMode: 'remote',
+					forceSelection: true, 
+					displayField : 'user_name',
+					valueField : 'user_id',
+					pageSize : 5,
+					minChars : 1, 
+					allowBlank : false, 
+					triggerAction: 'all',
+					store : remoteJsonStoreUser, 
+					listConfig : {
+						getInnerTpl: function(){
+							return  	'<div data-qtip="{user_name}">' +  
+													'<div class="combo-name">{user_name}</div>' +
+							 					'</div>';
+						}
+					},
+					name : 'user_id' 
+				},
+				
+				{
+					fieldLabel: 'Item',
+					xtype: 'combo',
+					queryMode: 'remote',
+					forceSelection: true, 
+					displayField : 'item_code',
+					valueField : 'item_id',
+					pageSize : 5,
+					minChars : 1, 
+					allowBlank : false, 
+					triggerAction: 'all',
+					store : remoteJsonStoreItem, 
+					listConfig : {
+						getInnerTpl: function(){
+							return  	'<div data-qtip="{item_code}">' +  
+													'<div class="combo-name">{type_name} | {item_code}</div>' +
+													'<div class="combo-name">{item_description}</div>' +
+							 					'</div>';
+						}
+					},
+					name : 'item_id' 
 				},
 			
 				
@@ -173,64 +222,59 @@ Ext.define('AM.view.operation.maintenance.Form', {
     this.callParent(arguments);
   },
 
-	// setSelectedItem: function( item_id ){
-	// 	var comboBox = this.down('form').getForm().findField('item_id'); 
-	// 	var me = this; 
-	// 	var store = comboBox.store;  
-	// 	store.load({
-	// 		params: {
-	// 			selected_id : item_id 
-	// 		},
-	// 		callback : function(records, options, success){
-	// 			me.setLoading(false);
-	// 			comboBox.setValue( item_id );
-	// 		}
-	// 	});
-	// },
-	// 
-	// setSelectedUser: function( user_id ){
-	// 	var comboBox = this.down('form').getForm().findField('user_id'); 
-	// 	var me = this; 
-	// 	var store = comboBox.store;  
-	// 	store.load({
-	// 		params: {
-	// 			selected_id : user_id 
-	// 		},
-	// 		callback : function(records, options, success){
-	// 			me.setLoading(false);
-	// 			comboBox.setValue( user_id );
-	// 		}
-	// 	});
-	// },
-	// 
-	// 
-	// setExtraParamInGroupLoanWeeklyCollectionComboBox: function(parent_id){
-	// 	var comboBox = this.down('form').getForm().findField('item_id'); 
-	// 	var store = comboBox.store;
-	// 	
-	// 	store.getProxy().extraParams.parent_id =  parent_id;
-	// },
-	// 
-	// 
-	// setComboBoxExtraParams: function( parent_id ) {
-	// 	var me =this;
-	// 	me.setExtraParamInItemComboBox( parent_id );
-	// },
-	// 
-	// 
-	// 
-	// setComboBoxData : function( record){
-	// 	// console.log("gonna set combo box data");
-	// 	var me = this; 
-	// 	me.setLoading(true);
-	// 	me.setSelectedItem( record.get("item_id")  ) ; 
-	// 	me.setSelectedUser( record.get("user_id")  ) ;
-	// },
-	//  
-	// setParentData: function( record ){
-	// 	this.down('form').getForm().findField('customer_name').setValue(record.get('name')); 
-	// 	this.down('form').getForm().findField('customer_id').setValue(record.get('id')); 
-	// },
+	setSelectedItem: function( item_id ){
+		var comboBox = this.down('form').getForm().findField('item_id'); 
+		var me = this; 
+		var store = comboBox.store;  
+		store.load({
+			params: {
+				selected_id : item_id 
+			},
+			callback : function(records, options, success){
+				me.setLoading(false);
+				comboBox.setValue( item_id );
+			}
+		});
+	},
+	
+	setSelectedUser: function( user_id ){
+		var comboBox = this.down('form').getForm().findField('user_id'); 
+		var me = this; 
+		var store = comboBox.store;  
+		store.load({
+			params: {
+				selected_id : user_id 
+			},
+			callback : function(records, options, success){
+				me.setLoading(false);
+				comboBox.setValue( user_id );
+			}
+		});
+	},
+	
+	
+ 
+	
+	
+	setComboBoxExtraParams: function( parent_id ) {
+		var me =this;
+		me.setExtraParamInItemComboBox( parent_id );
+	},
+	
+	
+	
+	setComboBoxData : function( record){
+		// console.log("gonna set combo box data");
+		var me = this; 
+		me.setLoading(true);
+		me.setSelectedItem( record.get("item_id")  ) ; 
+		me.setSelectedUser( record.get("user_id")  ) ;
+	},
+	 
+	setParentData: function( record ){
+		this.down('form').getForm().findField('customer_name').setValue(record.get('name')); 
+		this.down('form').getForm().findField('customer_id').setValue(record.get('id')); 
+	},
 	
 });
 
