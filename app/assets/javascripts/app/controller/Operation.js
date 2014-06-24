@@ -55,7 +55,7 @@ Ext.define("AM.controller.Operation", {
 		children 	: [
         
 			{ 
-				text:'Maintenance', 
+				text:'Maintenance A', 
 				viewClass:'AM.view.operation.Maintenance', 
 				leaf:true, 
 				iconCls:'text',
@@ -66,18 +66,7 @@ Ext.define("AM.controller.Operation", {
 				}
 				]
 			}, 
-			{ 
-				text:'Result', 
-				viewClass:'AM.view.operation.Customer', 
-				leaf:true, 
-				iconCls:'text',
-				conditions : [
-				{
-					controller : 'customers',
-					action : 'index'
-				}
-				]
-			} 
+			 
     ]
 	},
 	
@@ -123,7 +112,7 @@ Ext.define("AM.controller.Operation", {
 		
 		me.folderList = [
 			this.scheduledFolder,
-			this.emergencyFolder
+			// this.emergencyFolder
 			// this.inventoryFolder,
 			// this.reportFolder,
 			// this.projectReportFolder

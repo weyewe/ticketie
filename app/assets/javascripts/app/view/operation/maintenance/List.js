@@ -1,4 +1,4 @@
-Ext.define('AM.view.operational.maintenance.List' ,{
+Ext.define('AM.view.operation.maintenance.List' ,{
   	extend: 'Ext.grid.Panel',
   	alias : 'widget.maintenancelist',
 
@@ -7,26 +7,24 @@ Ext.define('AM.view.operational.maintenance.List' ,{
 
 	initComponent: function() {
 		this.columns = [
-			{ header: 'ID', dataIndex: 'id'},
-			{ header: 'Nama',  dataIndex: 'name', flex: 1},
-			{	header: 'Email', dataIndex: 'email', flex: 1 },
-			{	header: 'Alamat', dataIndex: 'address', flex: 1 },
-			{	header: 'Contact', dataIndex: 'contact', flex: 1 },
+			{ header: 'Code',  dataIndex: 'code', flex: 1},
+			{	header: 'Employee', dataIndex: 'user_name', flex: 1 },
+			{	header: 'Item', dataIndex: 'item_code', flex: 1 },
 		];
 
 		this.addObjectButton = new Ext.Button({
-			text: 'Add Maintenance',
+			text: 'Add',
 			action: 'addObject'
 		});
 
 		this.editObjectButton = new Ext.Button({
-			text: 'Edit Maintenance',
+			text: 'Edit',
 			action: 'editObject',
 			disabled: true
 		});
 
 		this.deleteObjectButton = new Ext.Button({
-			text: 'Delete Maintenance',
+			text: 'Delete',
 			action: 'deleteObject',
 			disabled: true
 		});
@@ -66,5 +64,14 @@ Ext.define('AM.view.operational.maintenance.List' ,{
 	disableRecordButtons: function() {
 		this.editObjectButton.disable();
 		this.deleteObjectButton.disable();
-	}
+	},
+	
+	enableAddButton: function(){
+		this.addObjectButton.enable();
+	},
+	disableAddButton : function(){
+		this.addObjectButton.disable();
+	},
+	
+	
 });

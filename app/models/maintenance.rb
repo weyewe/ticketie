@@ -6,6 +6,7 @@ class Maintenance < ActiveRecord::Base
   validates_presence_of :customer_id, :item_id, :user_id 
   belongs_to :item
   belongs_to :customer 
+  belongs_to :user
   
  
   

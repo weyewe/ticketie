@@ -113,13 +113,13 @@ Ext.define("AM.controller.Master", {
 				]
 			},
 			{ 
-				text:'Contract', 
-				viewClass:'AM.view.master.Contract', 
+				text:'Maintenance', 
+				viewClass:'AM.view.master.Maintenance', 
 				leaf:true, 
 				iconCls:'text',
 				conditions : [
 					{
-						controller : 'contract_maintenances',
+						controller : 'maintenances',
 						action : 'index'
 					}
 				]

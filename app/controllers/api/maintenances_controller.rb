@@ -128,7 +128,7 @@ class Api::MaintenancesController < Api::BaseApiController
       render :json => { :success => true,   
                         :maintenances => [
                             :id 							=>  	@object.id    ,
-                          	:item_name 			 										 =>   @object.item.name                                ,
+                          	:item_name 			 										 =>   @object.item.code                                ,
                           	:item_id                   => @object.item.id , 
                           	:customer_name 						 =>   @object.customer.name  ,
                           	:customer_id					 =>   @object.customer.id   ,
@@ -136,7 +136,7 @@ class Api::MaintenancesController < Api::BaseApiController
                           	:user_name 										 =>   @object.user.name,
                           	:complaint_date 										 =>   format_date_friendly(@object.complaint_date)    ,
                           	:complaint 							 =>   @object.complaint ,
-                          	:complaint_case 									 =>   format_date_friendly( @object.complaint_case) ,
+                          	:complaint_case 									 =>    @object.complaint_case ,
                           	:complaint_case_text 											 =>   @object.complaint_case_text,
                           	:diagnosis_date 											 =>   format_date_friendly( @object.diagnosis_date )   ,
                           	:diagnosis =>   @object.diagnosis     ,

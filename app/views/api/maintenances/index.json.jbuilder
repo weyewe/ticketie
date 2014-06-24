@@ -1,28 +1,29 @@
 json.success true 
 json.total @total
 json.maintenances @objects do |object|
-	 id                   	object.id 
-	 item_name             	object.item.name                                  
-	 item_id              	object.item.id   
-	 customer_name         	object.customer.name 	
-	 customer_id           	object.customer.id   	
-	 user_id               	object.user.id  
-	 user_name             	object.user.name 
-	 complaint_date        	format_date_friendly(object.complaint_date)   
-	 complaint             	object.complaint  
-	 complaint_case        	format_date_friendly( object.complaint_case)  
-	 complaint_case_text   	object.complaint_case_text 
-	 diagnosis_date        	format_date_friendly( object.diagnosis_date )    
-	 diagnosis             	object.diagnosis   
-   diagnosis_case       	object.diagnosis_case                 
-   diagnosis_case_text  	object.diagnosis_case_text 
-   is_diagnosed         	object.is_diagnosed 
-   solution_date        	format_date_friendly( object.solution_date ) 
-   solution             	object.solution 
-	 solution_case        	object.solution_case 
-	 solution_case_text   	object.solution_case_text 
-	 is_solved            	object.is_solved 
-	 is_confirmed         	object.is_confirmed 
-   is_deleted           	object.is_deleted
+	 json.id                   	object.id 
+	 json.code										object.code 
+	 json.item_code             	object.item.code                                  
+	 json.item_id              	object.item.id   
+	 json.customer_name         	object.customer.name 	
+	 json.customer_id           	object.customer.id   	
+	 json.user_id               	object.user.id  
+	 json.user_name             	object.user.name 
+	 json.complaint_date        	format_date_friendly(object.complaint_date)   
+	 json.complaint             	object.complaint  
+	 json.complaint_case          object.complaint_case 
+	 json.complaint_case_text   	object.complaint_case_text 
+	 json.diagnosis_date        	format_date_friendly( object.diagnosis_date )    
+	 json.diagnosis             	object.diagnosis   
+   json.diagnosis_case       	object.diagnosis_case                 
+   json.diagnosis_case_text  	object.diagnosis_case_text 
+   json.is_diagnosed         	object.is_diagnosed 
+   json.solution_date        	format_date_friendly( object.solution_date ) 
+   json.solution             	object.solution 
+	 json.solution_case        	object.solution_case 
+	 json.solution_case_text   	object.solution_case_text 
+	 json.is_solved            	object.is_solved 
+	 json.is_confirmed         	object.is_confirmed 
+   json.is_deleted           	object.is_deleted
 
 end

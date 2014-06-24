@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 20140508082817) do
     t.integer  "item_id"
     t.integer  "customer_id"
     t.integer  "user_id"
+    t.string   "code"
     t.datetime "complaint_date"
     t.text     "complaint"
     t.integer  "complaint_case", default: 1
