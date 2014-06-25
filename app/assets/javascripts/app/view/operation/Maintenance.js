@@ -19,7 +19,7 @@ Ext.define('AM.view.operation.Maintenance', {
 				
 				{
 					xtype : 'maintenancelist',
-					flex : 2
+					flex : 5
 				}, 
 			
 			// {

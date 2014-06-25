@@ -97,9 +97,9 @@ class Api::MaintenancesController < Api::BaseApiController
     @object = Maintenance.find(params[:id])
     
     
-    params[:maintenance][:complaint_date] =  parse_date( params[:maintenance][:complaint_date] )
-    params[:maintenance][:diagnosis_date] =  parse_date( params[:maintenance][:diagnosis_date] )
-    params[:maintenance][:solution_date] =  parse_date( params[:maintenance][:solution_date] )
+    params[:maintenance][:complaint_date] =  parse_datetime_from_client_booking( params[:maintenance][:complaint_date] )
+    params[:maintenance][:diagnosis_date] =  parse_datetime_from_client_booking( params[:maintenance][:diagnosis_date] )
+    params[:maintenance][:solution_date] =   parse_datetime_from_client_booking( params[:maintenance][:solution_date] )
 
 
     if params[:diagnosis].present?  

@@ -6,13 +6,31 @@ Ext.define('AM.view.operation.maintenance.List' ,{
  
 
 	initComponent: function() {
+		// this.columns = [
+		// 	{ header: 'Code',  dataIndex: 'code', flex: 1},
+		// 	{	header: 'Employee', dataIndex: 'user_name', flex: 1 },
+		// 	{	header: 'Item', dataIndex: 'item_code', flex: 1 },
+		// 	{	header: 'Complaint Date', dataIndex: 'complaint_date', flex: 1 },
+		// 	{	header: 'Complaint', dataIndex: 'complaint', flex: 1 },
+		// ];
+		
 		this.columns = [
-			{ header: 'Code',  dataIndex: 'code', flex: 1},
-			{	header: 'Employee', dataIndex: 'user_name', flex: 1 },
 			{	header: 'Item', dataIndex: 'item_code', flex: 1 },
-			{	header: 'Complaint Date', dataIndex: 'complaint_date', flex: 1 },
-			{	header: 'Complaint', dataIndex: 'complaint', flex: 1 },
+			{
+				xtype : 'templatecolumn',
+				text : "Complaint",
+				flex : 1,
+				tpl : 'Code: <b>{code}</b>' + '<br />' + '<br />' +
+							'Complaint Date:<br /> <b>{complaint_date}</b>'  + '<br />' + '<br />' 
+							
+							'Complaint:<br />{complaint}'  + '<br />' + '<br />' 
+			},
+			
+			
+		 
 		];
+		
+		
 
 		this.addObjectButton = new Ext.Button({
 			text: 'Add',
