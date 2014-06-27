@@ -1,6 +1,6 @@
-Ext.define('AM.view.master.type.Form', {
+Ext.define('AM.view.master.itemtype.Form', {
   extend: 'Ext.window.Window',
-  alias : 'widget.typeform',
+  alias : 'widget.itemtypeform',
 
   title : 'Add / Edit Type',
   layout: 'fit',
@@ -55,19 +55,19 @@ Ext.define('AM.view.master.type.Form', {
 
 	setComboBoxData : function( record){
 	
-		var role_id = record.get("role_id");
-		var comboBox = this.down('form').getForm().findField('role_id'); 
-		var me = this; 
-		var store = comboBox.store; 
-		store.load({
-			params: {
-				selected_id : role_id 
-			},
-			callback : function(records, options, success){
-				me.setLoading(false);
-				comboBox.setValue( role_id );
-			}
-		});
+		// var role_id = record.get("role_id");
+		// var comboBox = this.down('form').getForm().findField('role_id'); 
+		// var me = this; 
+		// var store = comboBox.store; 
+		// store.load({
+		// 	params: {
+		// 		selected_id : role_id 
+		// 	},
+		// 	callback : function(records, options, success){
+		// 		me.setLoading(false);
+		// 		comboBox.setValue( role_id );
+		// 	}
+		// });
 	}
 });
 

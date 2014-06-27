@@ -1,7 +1,7 @@
-Ext.define('AM.store.Types', {
+Ext.define('AM.store.ItemTypes', {
 	extend: 'Ext.data.Store',
-	require : ['AM.model.Type'],
-	model: 'AM.model.Type',
+	require : ['AM.model.ItemType'],
+	model: 'AM.model.ItemType',
 	// autoLoad: {start: 0, limit: this.pageSize},
 	autoLoad : false, 
 	autoSync: false,

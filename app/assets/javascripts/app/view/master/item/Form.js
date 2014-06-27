@@ -17,11 +17,11 @@ Ext.define('AM.view.master.item.Form', {
 			storeId : 'type_search',
 			fields	: [
 			 		{
-						name : 'type_name',
+						name : 'item_type_name',
 						mapping : "name"
 					} ,
 					{
-						name : 'type_id',
+						name : 'item_type_id',
 						mapping : "id"
 					}  
 			],
@@ -29,7 +29,7 @@ Ext.define('AM.view.master.item.Form', {
 		 
 			proxy  	: {
 				type : 'ajax',
-				url : 'api/search_type',
+				url : 'api/search_item_type',
 				reader : {
 					type : 'json',
 					root : 'records', 
@@ -82,8 +82,8 @@ Ext.define('AM.view.master.item.Form', {
 					xtype: 'combo',
 					queryMode: 'remote',
 					forceSelection: true, 
-					displayField : 'type_name',
-					valueField : 'type_id',
+					displayField : 'item_type_name',
+					valueField : 'item_type_id',
 					pageSize : 5,
 					minChars : 1, 
 					allowBlank : false, 
@@ -91,12 +91,12 @@ Ext.define('AM.view.master.item.Form', {
 					store : remoteJsonStoreType , 
 					listConfig : {
 						getInnerTpl: function(){
-							return  	'<div data-qtip="{type_name}">' + 
-													'<div class="combo-name">{type_name}</div>' + 
+							return  	'<div data-qtip="{item_type_name}">' + 
+													'<div class="combo-name">{item_type_name}</div>' + 
 							 					'</div>';
 						}
 					},
-					name : 'type_id' 
+					name : 'item_type_id' 
 				},
 				{
 					xtype: 'datefield',
@@ -135,27 +135,27 @@ Ext.define('AM.view.master.item.Form', {
   },
 
 	
-	setSelectedType: function( type_id ){
-		var comboBox = this.down('form').getForm().findField('type_id'); 
+	setSelectedType: function( item_type_id ){
+		var comboBox = this.down('form').getForm().findField('item_type_id'); 
 		var me = this; 
 		var store = comboBox.store;  
 		store.load({
 			params: {
-				selected_id : type_id 
+				selected_id : item_type_id 
 			},
 			callback : function(records, options, success){
 				me.setLoading(false);
-				comboBox.setValue( type_id );
+				comboBox.setValue( item_type_id );
 			}
 		});
 	},
 
 	setComboBoxData : function( record){
-		// console.log("gonna set combo box data");
+		console.log("gonna set combo box data");
 		var me = this; 
 		me.setLoading(true);
 		
-		me.setSelectedType( record.get("type_id")  ) ; 
+		me.setSelectedType( record.get("item_type_id")  ) ; 
 	},
 	
 	setParentData: function( record ){

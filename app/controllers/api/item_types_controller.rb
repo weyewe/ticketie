@@ -1,10 +1,10 @@
-class Api::TypesController < Api::BaseApiController
+class Api::ItemTypesController < Api::BaseApiController
   
   def index
     
     if params[:livesearch].present? 
       livesearch = "%#{params[:livesearch]}%"
-      @objects = Type.where{
+      @objects = ItemType.where{
         (is_deleted.eq false) & 
         (
           (name =~  livesearch ) 
@@ -12,7 +12,7 @@ class Api::TypesController < Api::BaseApiController
         
       }.page(params[:page]).per(params[:limit]).order("id DESC")
       
-      @total = Type.where{
+      @total = ItemType.where{
         (is_deleted.eq false) & 
         (
           (name =~  livesearch )  
@@ -20,24 +20,24 @@ class Api::TypesController < Api::BaseApiController
         
       }.count
     else
-      @objects = Type.active_objects.page(params[:page]).per(params[:limit]).order("id DESC")
-      @total = Type.active_objects.count
+      @objects = ItemType.active_objects.page(params[:page]).per(params[:limit]).order("id DESC")
+      @total = ItemType.active_objects.count
     end
     
     
     
-    # render :json => { :types => @objects , :total => @total, :success => true }
+    # render :json => { :item_types => @objects , :total => @total, :success => true }
   end
 
   def create
-    @object = Type.create_object( params[:type] )  
+    @object = ItemType.create_object( params[:item_type] )  
     
     
  
     if @object.errors.size == 0 
       render :json => { :success => true, 
-                        :types => [@object] , 
-                        :total => Type.active_objects.count }  
+                        :item_types => [@object] , 
+                        :total => ItemType.active_objects.count }  
     else
       msg = {
         :success => false, 
@@ -52,13 +52,13 @@ class Api::TypesController < Api::BaseApiController
 
   def update
     
-    @object = Type.find_by_id params[:id] 
-    @object.update_object( params[:type])
+    @object = ItemType.find_by_id params[:id] 
+    @object.update_object( params[:item_type])
      
     if @object.errors.size == 0 
       render :json => { :success => true,   
-                        :types => [@object],
-                        :total => Type.active_objects.count  } 
+                        :item_types => [@object],
+                        :total => ItemType.active_objects.count  } 
     else
       msg = {
         :success => false, 
@@ -72,13 +72,13 @@ class Api::TypesController < Api::BaseApiController
   end
 
   def destroy
-    @object = Type.find(params[:id])
+    @object = ItemType.find(params[:id])
     @object.delete_object
 
     if @object.is_deleted
-      render :json => { :success => true, :total => Type.active_objects.count }  
+      render :json => { :success => true, :total => ItemType.active_objects.count }  
     else
-      render :json => { :success => false, :total => Type.active_objects.count }  
+      render :json => { :success => false, :total => ItemType.active_objects.count }  
     end
   end
   
@@ -93,22 +93,22 @@ class Api::TypesController < Api::BaseApiController
     # on PostGre SQL, it is ignoring lower case or upper case 
     
     if  selected_id.nil?
-      @objects = Type.where{ (name =~ query)   
+      @objects = ItemType.active_objects.where{ (name =~ query)   
                               }.
                         page(params[:page]).
                         per(params[:limit]).
                         order("id DESC")
                         
-      @total = Type.where{ (name =~ query)  
+      @total = ItemType.active_objects.where{ (name =~ query)  
                               }.count
     else
-      @objects = Type.where{ (id.eq selected_id)  
+      @objects = ItemType.where{ (id.eq selected_id)  
                               }.
                         page(params[:page]).
                         per(params[:limit]).
                         order("id DESC")
    
-      @total = Type.where{ (id.eq selected_id)   
+      @total = ItemType.where{ (id.eq selected_id)   
                               }.count 
     end
     

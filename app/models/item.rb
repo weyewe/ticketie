@@ -15,16 +15,30 @@
 =end
 class Item < ActiveRecord::Base
    
-  validates_presence_of :customer_id, :type_id   
+  validates_presence_of :customer_id, :item_type_id   
   belongs_to :customer
-  belongs_to :type 
+  belongs_to :item_type 
+  
+  validate :valid_item_type_id
+  
+  def valid_item_type_id
+    return if not  self.item_type_id.present? 
+    
+    object  = ItemType.find_by_id self.item_type_id
+    if object.nil?
+      self.errors.add(:item_type_id, "Harus ada")
+      return self 
+    end
+  end
+  
+  
   
  
   
   def self.create_object( params ) 
     new_object           = self.new
     new_object.customer_id            = params[:customer_id]
-    new_object.type_id                = params[:type_id    ]
+    new_object.item_type_id                = params[:item_type_id    ]
     
     new_object.description            = params[:description]
     new_object.manufactured_at        = params[:manufactured_at]
@@ -58,7 +72,7 @@ class Item < ActiveRecord::Base
   def update_object(params)
     
     self.customer_id  = params[:customer_id]
-    self.type_id      = params[:type_id    ]
+    self.item_type_id      = params[:item_type_id    ]
     
     self.description  = params[:description]
     self.manufactured_at  = params[:manufactured_at]

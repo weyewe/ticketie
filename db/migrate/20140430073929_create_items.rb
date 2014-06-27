@@ -3,7 +3,7 @@ class CreateItems < ActiveRecord::Migration
     create_table :items do |t|
       
       t.integer :customer_id 
-      t.integer :type_id 
+      t.integer :item_type_id 
       
       t.string :code 
       t.text :description

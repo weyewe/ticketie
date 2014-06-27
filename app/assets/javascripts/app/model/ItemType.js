@@ -1,9 +1,9 @@
-Ext.define('AM.model.Type', {
+Ext.define('AM.model.ItemType', {
   	extend: 'Ext.data.Model',
   	fields: [
-    	{ name: 'id', type: 'int' },
-			{ name: 'name', type: 'string' },
-			{ name: 'description', type: 'string' },
+    	{ name: 'id', item_type: 'int' },
+			{ name: 'name', item_type: 'string' },
+			{ name: 'description', item_type: 'string' },
 			 
   	],
 
@@ -12,19 +12,19 @@ Ext.define('AM.model.Type', {
 
    
   	idProperty: 'id' ,proxy: {
-			url: 'api/types',
+			url: 'api/item_types',
 			type: 'rest',
 			format: 'json',
 
 			reader: {
-				root: 'types',
+				root: 'item_types',
 				successProperty: 'success',
 				totalProperty : 'total'
 			},
 
 			writer: {
 				getRecordData: function(record) {
-					return { type : record.data };
+					return { item_type : record.data };
 				}
 			}
 		}

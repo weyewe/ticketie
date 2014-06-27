@@ -1,8 +1,8 @@
-Ext.define('AM.view.master.type.List' ,{
+Ext.define('AM.view.master.itemtype.List' ,{
   	extend: 'Ext.grid.Panel',
-  	alias : 'widget.typelist',
+  	alias : 'widget.itemtypelist',
 
-  	store: 'Types', 
+  	store: 'ItemTypes', 
  
 
 	initComponent: function() {

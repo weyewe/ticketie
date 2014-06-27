@@ -60,14 +60,22 @@ Ext.define('AM.controller.Maintenances', {
         change: this.liveSearch
       },
 
-			'maintenancelist button[action=deactivateObject]': {
-        click: this.deactivateObject
+			'maintenancelist button[action=diagnoseObject]': {
+        click: this.diagnoseObject
 			}	,
 			
-			// 'deactivateitemform button[action=confirmDeactivate]' : {
-			// 		click : this.executeDeactivate
-			// 	},
-		
+			'diagnosemaintenanceform button[action=confirmDiagnose]' : {
+				click : this.executeDiagnose
+			},
+			
+			'maintenancelist button[action=solveObject]': {
+        click: this.solveObject
+			}	,
+			
+			'solvemaintenanceform button[action=confirmSolve]' : {
+				click : this.executeSolve
+			},
+
     });
   },
 	onDestroy: function(){
@@ -233,16 +241,16 @@ Ext.define('AM.controller.Maintenances', {
     }
   },
 
-	deactivateObject: function(){
+	diagnoseObject: function(){
 		// console.log("mark as Deceased is clicked");
-		var view = Ext.widget('deactivateitemform');
+		var view = Ext.widget('diagnosemaintenanceform');
 		var record = this.getList().getSelectedObject();
 		view.setParentData( record );
 		// view.down('form').getForm().findField('c').setValue(record.get('deceased_at')); 
     view.show();
 	},
 	
-	executeDeactivate : function(button){
+	executeDiagnose : function(button){
 		var me = this; 
 		var win = button.up('window');
     var form = win.down('form');
@@ -254,7 +262,9 @@ Ext.define('AM.controller.Maintenances', {
  
 		if(record){
 			var rec_id = record.get("id");
-			record.set( 'deactivation_case' , values['deactivation_case'] );
+			record.set( 'diagnosis_case' , values['diagnosis_case'] );
+			record.set( 'diagnosis' , values['diagnosis'] );
+			record.set( 'diagnosis_date' , values['diagnosis_date'] );
 			 
 			// form.query('checkbox').forEach(function(checkbox){
 			// 	record.set( checkbox['name']  ,checkbox['checked'] ) ;
@@ -263,7 +273,67 @@ Ext.define('AM.controller.Maintenances', {
 			form.setLoading(true);
 			record.save({
 				params : {
-					deactivate: true 
+					diagnosis: true 
+				},
+				success : function(record){
+					form.setLoading(false);
+					
+					// list.fireEvent('confirmed', record);
+					
+					
+					store.load();
+					win.close();
+					
+				},
+				failure : function(record,op ){
+					// console.log("Fail update");
+					form.setLoading(false);
+					var message  = op.request.scope.reader.jsonData["message"];
+					var errors = message['errors'];
+					form.getForm().markInvalid(errors);
+					record.reject(); 
+					// this.reject(); 
+				}
+			});
+		}
+	},
+	
+	
+	solveObject: function(){
+		// console.log("mark as Deceased is clicked");
+		var view = Ext.widget('solvemaintenanceform');
+		var record = this.getList().getSelectedObject();
+		view.setParentData( record );
+		// view.down('form').getForm().findField('c').setValue(record.get('deceased_at')); 
+    view.show();
+	},
+	
+	executeSolve : function(button){
+		var me = this; 
+		var win = button.up('window');
+    var form = win.down('form');
+		var list = this.getList();
+
+    var store = this.getMaintenancesStore();
+		var record = this.getList().getSelectedObject();
+    var values = form.getValues();
+ 
+		if(record){
+			var rec_id = record.get("id");
+			
+			record.set( 'solution_case' , values['solution_case'] );
+			record.set( 'solution' , values['solution'] );
+			record.set( 'solution_date' , values['solution_date'] );
+			
+			 
+			// form.query('checkbox').forEach(function(checkbox){
+			// 	record.set( checkbox['name']  ,checkbox['checked'] ) ;
+			// });
+			// 
+			form.setLoading(true);
+			record.save({
+				params : {
+					solve: true 
 				},
 				success : function(record){
 					form.setLoading(false);

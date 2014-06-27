@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140508082817) do
+ActiveRecord::Schema.define(version: 20140625063942) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,9 +48,17 @@ ActiveRecord::Schema.define(version: 20140508082817) do
     t.datetime "updated_at"
   end
 
+  create_table "item_types", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.boolean  "is_deleted",  default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "items", force: true do |t|
     t.integer  "customer_id"
-    t.integer  "type_id"
+    t.integer  "item_type_id"
     t.string   "code"
     t.text     "description"
     t.datetime "manufactured_at"
@@ -76,13 +84,13 @@ ActiveRecord::Schema.define(version: 20140508082817) do
     t.string   "code"
     t.datetime "complaint_date"
     t.text     "complaint"
-    t.integer  "complaint_case", default: 1
+    t.integer  "complaint_case"
     t.text     "diagnosis"
-    t.integer  "diagnosis_case", default: 1
+    t.integer  "diagnosis_case"
     t.datetime "diagnosis_date"
     t.boolean  "is_diagnosed",   default: false
     t.text     "solution"
-    t.integer  "solution_case",  default: 0
+    t.integer  "solution_case"
     t.datetime "solution_date"
     t.boolean  "is_solved",      default: false
     t.boolean  "is_confirmed",   default: false

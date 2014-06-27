@@ -88,8 +88,8 @@ class Maintenance < ActiveRecord::Base
    
     
     return "OK" if diagnosis_case == DIAGNOSIS_CASE[:all_ok]
-    return "Fix" if diagnosis_case == DIAGNOSIS_CASE[:require_fix]
-    return "Replacement" if diagnosis_case == DIAGNOSIS_CASE[:require_replacement]
+    return "Butuh Perbaikan" if diagnosis_case == DIAGNOSIS_CASE[:require_fix]
+    return "Butuh Penggantian" if diagnosis_case == DIAGNOSIS_CASE[:require_replacement]
   end
   
   def solution_case_text
@@ -98,5 +98,130 @@ class Maintenance < ActiveRecord::Base
     return "Normal" if solution_case == SOLUTION_CASE[:normal]
     return "Pending" if solution_case == SOLUTION_CASE[:pending]
     return "Solved" if solution_case == SOLUTION_CASE[:solved]
+  end
+  
+=begin
+Phase related
+=end
+
+  def validate_diagnosis 
+    if not diagnosis_case.present?
+      self.errors.add(:diagnosis_case, "Harus ada")
+      return self 
+    end
+     
+    if not [
+        DIAGNOSIS_CASE[:all_ok],
+        DIAGNOSIS_CASE[:require_fix],
+        DIAGNOSIS_CASE[:require_replacement],
+      ].include?( self.diagnosis_case)
+      self.errors.add(:diagnosis_case, "Tidak valid")
+      return self 
+    end
+  end
+  
+  def diagnose(params)
+    self.is_diagnosed = true 
+    self.diagnosis_case = params[:diagnosis_case]
+    self.diagnosis = params[:diagnosis] 
+    self.diagnosis_date = params[:diagnosis_date]
+    
+    
+    self.validate_diagnosis
+    return self if self.errors.size != 0
+    self.save 
+    
+    
+    
+    return self 
+  end
+  
+  def undiagnose( params ) 
+    if self.is_solved?
+      self.errors.add(:generic_errors, "Sudah di solve")
+      return self 
+    end
+    
+    
+    self.is_diagnosed = false
+    self.diagnosis_case = nil
+    self.diagnosis = nil 
+    self.diagnosis_date = nil 
+    
+    
+    self.save
+  end
+  
+  
+  def validate_solve
+    if not solution_case.present?
+      self.errors.add(:solution_case, "Harus ada")
+      return self 
+    end
+     
+    if not [
+        SOLUTION_CASE[:normal],
+        SOLUTION_CASE[:pending],
+        SOLUTION_CASE[:solved],
+      ].include?( self.solution_case)
+      self.errors.add(:solution_case, "Tidak valid")
+      return self 
+    end
+  end
+  
+  def solve(params)
+    if not self.is_diagnosed?
+      self.errors.add(:generic_errors, "Belum di diagnosa")
+      return self 
+    end
+    
+    self.is_solved = true 
+    self.solution_case = params[:solution_case]
+    self.solution = params[:solution]
+    self.solution_date =  params[:solution_date] 
+    self.validate_solve
+    
+    return self if self.errors.size != 0
+    
+    self.save 
+  end
+  
+  def unsolve( params ) 
+    if not self.is_solved? 
+      self.errors.add(:generic_errors, "Belum di solve")
+      return self 
+    end
+    
+    if self.is_confirmed?
+      self.errors.add(:generic_errors, "Sudah di konfirmasi")
+      return self 
+    end
+    
+    
+    self.is_solved = false
+    self.solution_case = nil
+    self.solution = nil 
+    self.save 
+    
+  end
+  
+  def confirm( params ) 
+    if not self.is_solved?
+      self.errors.add(:generic_errors, "Belum di solve")
+      return self 
+    end
+    
+    self.is_confirmed = true 
+    self.save 
+  end
+  
+  def unconfirm(params)
+    if not self.is_confirmed?
+      self.errors.add(:generic_errors, "Belum di konfirmasi")
+      return self 
+    end
+    
+    self.is_confirmed = false 
+    self. save
   end
 end

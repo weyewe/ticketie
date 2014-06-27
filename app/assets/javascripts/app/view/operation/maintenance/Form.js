@@ -127,9 +127,7 @@ Ext.define('AM.view.operation.maintenance.Form', {
 						format: 'Y-m-d'
 					},
 					timeCfg : {
-						increment : 30,
-						maxValue: "23:59",
-						minValue: "08:00"
+						increment : 15
 					}
 				},
 				

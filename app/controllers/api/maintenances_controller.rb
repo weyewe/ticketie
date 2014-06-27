@@ -103,50 +103,51 @@ class Api::MaintenancesController < Api::BaseApiController
 
 
     if params[:diagnosis].present?  
-      if not current_user.has_role?( :maintenances, :start)
+      if not current_user.has_role?( :maintenances, :diagnose)
         render :json => {:success => false, :access_denied => "Tidak punya authorisasi"}
         return
       end
       
       
-      @object.start(:started_at => params[:maintenance][:started_at] )
+      @object.diagnose(  params[:maintenance]  )
     elsif params[:solution].present?    
       
-      if not current_user.has_role?( :maintenances, :unstart)
+      if not current_user.has_role?( :maintenances, :undiagnose)
         render :json => {:success => false, :access_denied => "Tidak punya authorisasi"}
         return
       end
       
-      @object.cancel_start
-    elsif params[:confirm].present?
-      if not current_user.has_role?( :maintenances, :disburse)
+      @object.undiagnose 
+      
+    elsif params[:solve].present?
+      if not current_user.has_role?( :maintenances, :solve)
         render :json => {:success => false, :access_denied => "Tidak punya authorisasi"}
         return
       end
       
-      @object.disburse_loan( :disbursed_at => params[:maintenance][:disbursed_at] )
-    elsif params[:unconfirm].present?  
-      if not current_user.has_role?( :maintenances, :undisburse)
+      @object.solve(   params[:maintenance]  )
+    elsif params[:unsolve].present?  
+      if not current_user.has_role?( :maintenances, :unsolve)
         render :json => {:success => false, :access_denied => "Tidak punya authorisasi"}
         return
       end
       
         
-      @object.undisburse
-    elsif params[:unsolve].present?
-      if not current_user.has_role?( :maintenances, :close)
+      @object.unsolve
+    elsif params[:confirm].present?
+      if not current_user.has_role?( :maintenances, :confirm)
         render :json => {:success => false, :access_denied => "Tidak punya authorisasi"}
         return
       end
       
-      @object.close( :closed_at => params[:maintenance][:closed_at] )
-    elsif params[:undiagnose].present?
-      if not current_user.has_role?( :maintenances, :withdraw)
+      @object.confirm 
+    elsif params[:unconfirm].present?
+      if not current_user.has_role?( :maintenances, :unconfirm)
         render :json => {:success => false, :access_denied => "Tidak punya authorisasi"}
         return
       end
       
-      @object.withdraw_compulsory_savings( :compulsory_savings_withdrawn_at => params[:maintenance][:compulsory_savings_withdrawn_at] )
+      @object.unconfirm 
     else
     
       @object.update_object(params[:maintenance])

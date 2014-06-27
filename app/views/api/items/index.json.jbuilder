@@ -8,7 +8,7 @@ json.items @objects do |object|
  
 	 
 	json.customer_id		object.customer_id 
-	json.type_id				object.type_id
+	json.item_type_id				object.item_type_id
 	
 	json.code 								object.code
 	json.description 					object.description

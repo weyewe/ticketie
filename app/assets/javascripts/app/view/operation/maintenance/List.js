@@ -6,24 +6,49 @@ Ext.define('AM.view.operation.maintenance.List' ,{
  
 
 	initComponent: function() {
-		// this.columns = [
-		// 	{ header: 'Code',  dataIndex: 'code', flex: 1},
-		// 	{	header: 'Employee', dataIndex: 'user_name', flex: 1 },
-		// 	{	header: 'Item', dataIndex: 'item_code', flex: 1 },
-		// 	{	header: 'Complaint Date', dataIndex: 'complaint_date', flex: 1 },
-		// 	{	header: 'Complaint', dataIndex: 'complaint', flex: 1 },
-		// ];
-		
+		 
 		this.columns = [
-			{	header: 'Item', dataIndex: 'item_code', flex: 1 },
+			
+			{
+				xtype : 'templatecolumn',
+				text : "Info",
+				flex : 1,
+				tpl : 'Item: <b>{item_code}</b>' + '<br />' + '<br />' +
+							'Staff:<br /> <b>{user_name}</b>'  + '<br />' + '<br />' + 
+							'Maintenance Code:<br /> <b>{code}</b>' + '<br />' + '<br />' 
+			},
+			
+			
 			{
 				xtype : 'templatecolumn',
 				text : "Complaint",
-				flex : 1,
-				tpl : 'Code: <b>{code}</b>' + '<br />' + '<br />' +
-							'Complaint Date:<br /> <b>{complaint_date}</b>'  + '<br />' + '<br />' 
+				flex : 2,
+				tpl : '<b>{complaint_case_text}</b>'  + '<br />' + '<br />' +
+				
+							'Complaint Date:<br /> <b>{complaint_date}</b>'  + '<br />' + '<br />' + 
+							 
 							
-							'Complaint:<br />{complaint}'  + '<br />' + '<br />' 
+							'Complaint:<br />{complaint}'  
+			},
+			
+			{
+				xtype : 'templatecolumn',
+				text : "Inspection",
+				flex : 2,
+				tpl : '<b>{diagnosis_case_text}</b>'  + '<br />' + '<br />' + 
+							'Inspection Date:<br /> <b>{diagnosis_date}</b>'  + '<br />' + '<br />' + 
+							
+							'Diagnosis:<br />{diagnosis}'  + '<br />' + '<br />' 
+			},
+			
+			{
+				xtype : 'templatecolumn',
+				text : "Solution",
+				flex : 2,
+				tpl : '<b>{solution_case_text}</b>'  + '<br />' + '<br />' + 
+							'Solution Date:<br /> <b>{solution_date}</b>'  + '<br />' + '<br />' + 
+							
+							'Solution:<br />{diagnosis}'  + '<br />' + '<br />' 
 			},
 			
 			
@@ -54,6 +79,13 @@ Ext.define('AM.view.operation.maintenance.List' ,{
 			action: 'diagnoseObject',
 			disabled: true
 		});
+		this.undiagnoseObjectButton = new Ext.Button({
+			text: 'Undiagnose',
+			action: 'undiagnoseObject',
+			disabled: true,
+			hidden : true 
+		});
+		
 		
 		this.solveObjectButton = new Ext.Button({
 			text: 'Solve',
@@ -61,11 +93,26 @@ Ext.define('AM.view.operation.maintenance.List' ,{
 			disabled: true
 		});
 		
+		this.unsolveObjectButton = new Ext.Button({
+			text: 'Unsolve',
+			action: 'unsolveObject',
+			disabled: true,
+			hidden :true 
+		});
+		
+		
 		this.confirmObjectButton = new Ext.Button({
 			text: 'Confirm',
 			action: 'confirmObject',
 			disabled: true
 		});
+		this.unconfirmObjectButton = new Ext.Button({
+			text: 'Unconfirm',
+			action: 'unconfirmObject',
+			disabled: true,
+			hidden :true 
+		});
+		
 		
 		this.searchField = new Ext.form.field.Text({
 			name: 'searchField',
@@ -77,7 +124,13 @@ Ext.define('AM.view.operation.maintenance.List' ,{
 
 
 
-		this.tbar = [this.addObjectButton, this.editObjectButton, this.deleteObjectButton, this.searchField ];
+		this.tbar = [this.addObjectButton, this.editObjectButton, this.deleteObjectButton, 
+			this.diagnoseObjectButton,
+			this.undiagnoseObjectButton,
+			this.solveObjectButton, 
+			this.unsolveObjectButton, 
+		
+		'->', this.searchField ];
 		this.bbar = Ext.create("Ext.PagingToolbar", {
 			store	: this.store, 
 			displayInfo: true,
@@ -97,11 +150,46 @@ Ext.define('AM.view.operation.maintenance.List' ,{
 	enableRecordButtons: function() {
 		this.editObjectButton.enable();
 		this.deleteObjectButton.enable();
+		
+		this.diagnoseObjectButton.enable();
+		this.undiagnoseObjectButton.enable();
+		this.solveObjectButton.enable(); 
+		this.unsolveObjectButton.enable(); 
+		this.confirmObjectButton.enable(); 
+		this.unconfirmObjectButton.enable();
+		
+		
+		selectedObject = this.getSelectedObject();
+		if( selectedObject && selectedObject.get("is_diagnosed") == true ){
+			this.diagnoseObjectButton.hide();
+			this.undiagnoseObjectButton.show();
+		}else{
+			this.diagnoseObjectButton.show();
+			this.undiagnoseObjectButton.hide();
+		}
+		
+		if( selectedObject && selectedObject.get("is_solved") == true ){
+			this.solveObjectButton.hide();
+			this.unsolveObjectButton.show();
+		}else{
+			this.solveObjectButton.show();
+			this.unsolveObjectButton.hide();
+		}
+		
+		
+		
 	},
 
 	disableRecordButtons: function() {
 		this.editObjectButton.disable();
 		this.deleteObjectButton.disable();
+		
+		this.diagnoseObjectButton.disable();
+		this.undiagnoseObjectButton.disable();
+		this.solveObjectButton.disable(); 
+		this.unsolveObjectButton.disable(); 
+		this.confirmObjectButton.disable(); 
+		this.unconfirmObjectButton.disable();
 	},
 	
 	enableAddButton: function(){

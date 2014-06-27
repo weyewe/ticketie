@@ -1,7 +1,7 @@
 
 json.success true 
 json.total @total
-json.types @objects do |object|
+json.item_types @objects do |object|
 	json.id 								object.id  
  
 	 

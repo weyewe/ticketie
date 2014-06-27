@@ -15,19 +15,19 @@ Ext.define('AM.model.Maintenance', {
     	{ name: 'complaint_date', type: 'string' } ,
 			{ name: 'complaint', type: 'string' } ,
 			{ name: 'complaint_case', type: 'int' },
-			{ name: 'complaint_case_text', type: 'int' },
+			{ name: 'complaint_case_text', type: 'string' },
 			
 			{ name: 'diagnosis_date', type: 'string' } ,
 			{ name: 'diagnosis', type: 'string' } ,
 			{ name: 'diagnosis_case', type: 'int' },
-			{ name: 'diagnosis_case_text', type: 'int' },
+			{ name: 'diagnosis_case_text', type: 'string' },
 			
 			{ name: 'is_diagnosed', type: 'boolean' },
 			
 			{ name: 'solution_date', type: 'string' } ,
 			{ name: 'solution', type: 'string' } ,
 			{ name: 'solution_case', type: 'int' },
-			{ name: 'solution_case_text', type: 'int' },
+			{ name: 'solution_case_text', type: 'string' },
 			
 			{ name: 'is_solved', type: 'boolean' },
 			{ name: 'is_confirmed', type: 'boolean' },

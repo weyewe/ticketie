@@ -1,41 +1,41 @@
-Ext.define('AM.controller.Types', {
+Ext.define('AM.controller.ItemTypes', {
   extend: 'Ext.app.Controller',
 
-  stores: ['Types'],
-  models: ['Type'],
+  stores: ['ItemTypes'],
+  models: ['ItemType'],
 
   views: [
-    'master.type.List',
-    'master.type.Form'
+    'master.itemtype.List',
+    'master.itemtype.Form'
   ],
 
   	refs: [
 		{
 			ref: 'list',
-			selector: 'typelist'
+			selector: 'itemtypelist'
 		} 
 	],
 
   init: function() {
     this.control({
-      'typelist': {
+      'itemtypelist': {
         itemdblclick: this.editObject,
         selectionchange: this.selectionChange,
 				afterrender : this.loadObjectList,
       },
-      'typeform button[action=save]': {
+      'itemtypeform button[action=save]': {
         click: this.updateObject
       },
-      'typelist button[action=addObject]': {
+      'itemtypelist button[action=addObject]': {
         click: this.addObject
       },
-      'typelist button[action=editObject]': {
+      'itemtypelist button[action=editObject]': {
         click: this.editObject
       },
-      'typelist button[action=deleteObject]': {
+      'itemtypelist button[action=deleteObject]': {
         click: this.deleteObject
 			}	,
-			'typelist textfield[name=searchField]': {
+			'itemtypelist textfield[name=searchField]': {
 				change: this.liveSearch
 			}
 		
@@ -45,11 +45,11 @@ Ext.define('AM.controller.Types', {
 	liveSearch : function(grid, newValue, oldValue, options){
 		var me = this;
 
-		me.getTypesStore().getProxy().extraParams = {
+		me.getItemTypesStore().getProxy().extraParams = {
 		    livesearch: newValue
 		};
 	 
-		me.getTypesStore().load();
+		me.getItemTypesStore().load();
 	},
  
 
@@ -59,13 +59,13 @@ Ext.define('AM.controller.Types', {
 	},
 
   addObject: function() {
-    var view = Ext.widget('typeform');
+    var view = Ext.widget('itemtypeform');
     view.show();
   },
 
   editObject: function() {
     var record = this.getList().getSelectedObject();
-    var view = Ext.widget('typeform');
+    var view = Ext.widget('itemtypeform');
 
     view.down('form').loadRecord(record);
 		view.setComboBoxData(record); 
@@ -75,7 +75,7 @@ Ext.define('AM.controller.Types', {
     var win = button.up('window');
     var form = win.down('form');
 
-    var store = this.getTypesStore();
+    var store = this.getItemTypesStore();
     var record = form.getRecord();
     var values = form.getValues();
 
@@ -104,7 +104,7 @@ Ext.define('AM.controller.Types', {
 		}else{
 			//  no record at all  => gonna create the new one 
 			var me  = this; 
-			var newObject = new AM.model.Type( values ) ;
+			var newObject = new AM.model.ItemType( values ) ;
 			
 			// learnt from here
 			// http://www.sencha.com/forum/showthread.php?137580-ExtJS-4-Sync-and-success-failure-processing
@@ -133,7 +133,7 @@ Ext.define('AM.controller.Types', {
     var record = this.getList().getSelectedObject();
 
     if (record) {
-      var store = this.getTypesStore();
+      var store = this.getItemTypesStore();
       store.remove(record);
       store.sync();
 // to do refresh programmatically

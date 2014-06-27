@@ -109,7 +109,7 @@ DIAGNOSIS_CASE = {
 }
 
 SOLUTION_CASE = {
-  :normal => 0 ,
-  :pending => 1,
-  :solved =>  2    # 
+  :normal => 1 ,
+  :pending => 2,
+  :solved =>  3    # 
 }

@@ -81,30 +81,32 @@ data_entry_role = Role.create!(
   
   customer_array = [customer_1, customer_2, customer_3 ]
   
-  type_pc = Type.create_object(
+  item_type_pc = ItemType.create_object(
     :name => "PC",
     :description => "Seperangkat komputer: mouse, CPU, Monitor, Speaker (optional)"
   )
   
-  type_laptop = Type.create_object(
+  item_type_laptop = ItemType.create_object(
     :name => "Laptop",
     :description => "Awesome"
   )
   
-  type_array = [type_pc, type_laptop]
+  item_type_array = [item_type_pc, item_type_laptop]
   
   
   (1..3).each do |x|
     customer_array.each do |customer_object|
-      type_array.each do |type_object|
+      item_type_array.each do |type_object|
         
-        Item.create_object(
+        a=  Item.create_object(
           :customer_id              => customer_object.id,
-          :type_id                  => type_object.id,
+          :item_type_id                  => type_object.id,
           :description              => "#{customer_object.name} #{type_object.name} #{x} ",
           :manufactured_at          => DateTime.new(2011, 10,10), 
           :warranty_expiry_date     => DateTime.new(2013, 10,10)
         )
+        
+        a.errors.messages.each {|x| puts "Item error: #{x}"}
       end
     end
   end
