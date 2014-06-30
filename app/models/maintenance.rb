@@ -8,6 +8,29 @@ class Maintenance < ActiveRecord::Base
   belongs_to :customer 
   belongs_to :user
   
+  validate :valid_item
+  validate :valid_customer 
+  
+  def valid_item
+    return if item_id.nil?
+    
+    selected_item = Item.find_by_id item_id
+    if selected_item.nil?
+      self.errors.add(:item_id, "Harus memilih item id ")
+      return self 
+    end
+  end
+  
+  def valid_customer
+    return if customer_id.nil?
+    
+    selected_customer = Customer.find_by_id customer_id
+    if selected_customer.nil?
+      self.errors.add(:generic_errors, "Harus memilih customer id ")
+      return self 
+    end
+  end
+  
  
   
   def self.create_object( params ) 
