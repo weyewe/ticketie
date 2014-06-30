@@ -6,7 +6,7 @@ class Api::MaintenancesController < Api::BaseApiController
     
     if params[:livesearch].present? 
       livesearch = "%#{params[:livesearch]}%"
-      @objects = Maintenance.active_objects.where{ 
+      @objects = Maintenance.includes(:item).active_objects.where{ 
         (
           (name =~  livesearch ) | 
           (code =~  livesearch )
@@ -14,7 +14,7 @@ class Api::MaintenancesController < Api::BaseApiController
         
       }.page(params[:page]).per(params[:limit]).order("id DESC")
       
-      @total = Maintenance.active_objects.where{ 
+      @total = Maintenance.includes(:item).active_objects.where{ 
         (
           (name =~  livesearch ) | 
           (code =~  livesearch )
@@ -25,10 +25,10 @@ class Api::MaintenancesController < Api::BaseApiController
       
     elsif params[:parent_id].present?
       # @group_loan = Maintenance.find_by_id params[:parent_id]
-      @objects = Maintenance.active_objects.
+      @objects = Maintenance.includes(:item).active_objects.
                   where(:customer_id => params[:parent_id]).
                   page(params[:page]).per(params[:limit]).order("id DESC")
-      @total = Maintenance.active_objects.where(:customer_id => params[:parent_id]).count 
+      @total = Maintenance.includes(:item).active_objects.where(:customer_id => params[:parent_id]).count 
     else
       @objects = []
       @total = 0 
@@ -240,3 +240,12 @@ class Api::MaintenancesController < Api::BaseApiController
     # render :json => { :records => @objects , :total => @total, :success => true }
   end
 end
+
+
+=begin
+
+maintenance_with_0_item_id = Maintenance.where(:item_id => 0 )
+
+maintenance_with_0_item_id.each {|x| x.item_id = x.customer.items.first.id ; x.save; }
+
+=end
