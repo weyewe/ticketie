@@ -10,6 +10,7 @@ class Maintenance < ActiveRecord::Base
   
   validate :valid_item
   validate :valid_customer 
+  validate :valid_user
   
   def valid_item
     return if item_id.nil?
@@ -27,6 +28,16 @@ class Maintenance < ActiveRecord::Base
     selected_customer = Customer.find_by_id customer_id
     if selected_customer.nil?
       self.errors.add(:generic_errors, "Harus memilih customer id ")
+      return self 
+    end
+  end
+  
+  def valid_user
+    return if user_id.nil?
+    
+    selected_user = User.find_by_id user_id
+    if selected_user.nil?
+      self.errors.add(:generic_errors, "Harus memilih user id ")
       return self 
     end
   end
