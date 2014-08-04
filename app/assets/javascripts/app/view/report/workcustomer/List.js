@@ -11,7 +11,8 @@ Ext.define('AM.view.report.workcustomer.List' ,{
 				xtype : 'templatecolumn',
 				text : "Info",
 				flex : 1,
-				tpl : 'maintenanceid: {id}' + '<br />' 
+				tpl : '<b>{code}</b>' + '<br />'  + 
+								'{complaint}' 
 			},
 			
 			  
