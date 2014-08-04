@@ -123,7 +123,7 @@ Ext.define("AM.controller.Master", {
 		children 	: [
         
 			{ 
-				text:'Item', 
+				text:'By Customer', 
 				viewClass:'AM.view.master.report.employee.WorkCustomer', 
 				leaf:true, 
 				iconCls:'text',
