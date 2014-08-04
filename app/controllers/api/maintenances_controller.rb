@@ -1,34 +1,144 @@
 class Api::MaintenancesController < Api::BaseApiController
   
+  
+  def build_livesearch_results
+    livesearch = "%#{params[:livesearch]}%"
+    @objects = Maintenance.includes(:item).active_objects.where{ 
+      (
+        (name =~  livesearch ) | 
+        (code =~  livesearch )
+      )
+      
+    }.page(params[:page]).per(params[:limit]).order("id DESC")
+    
+    @total = Maintenance.includes(:item).active_objects.where{ 
+      (
+        (name =~  livesearch ) | 
+        (code =~  livesearch )
+      )
+    }.count
+  end
+  
+  def build_personal_report_results
+    view_value = params[:viewValue].to_i  
+    date = parse_datetime_from_client_booking( params[:focusDate])
+    date =   DateTime.new( date.year , 
+                              date.month, 
+                              date.day, 
+                              0, 
+                              0, 
+                              0,
+                  Rational( UTC_OFFSET , 24) )
+    
+    
+    
+                  
+    customer = Customer.where(:id => params[:selectedRecordId]).first 
+    if customer.nil?
+      @objects  = [] 
+      @total = 0 
+    else
+      starting_date = 0 
+      ending_date = 0 
+      
+      if view_value == VIEW_VALUE[:week]
+        starting_date = date - date.wday.days 
+        ending_date = starting_date + 7.days  
+      elsif view_value == VIEW_VALUE[:month]
+        starting_date = date - date.mday.days 
+        days_in_month = Time.days_in_month(date.month, date.year)
+        ending_date = starting_date + days_in_month.days
+      end
+      
+      current_user_id = current_user.id 
+      @objects  =        Maintenance.active_objects.where{
+        (complaint_date.gte starting_date) & 
+        (complaint_date.lt ending_date ) & 
+        (user_id.eq current_user_id ) & 
+        (customer_id.eq customer_id.id )
+      }.joins(:customer).page(params[:page]).per(params[:limit]).order("id DESC")
+
+    
+      @total =            Maintenance.active_objects.where{
+        (complaint_date.gte starting_date) & 
+        (complaint_date.lt ending_date ) & 
+        (user_id.eq current_user_id ) & 
+        (customer_id.eq customer_id.id )
+      }.count 
+      
+    end
+  end
+  
+  def build_master_report_results # company scope 
+    customer = Customer.where(:id => params[:selectedRecordId]).first 
+    view_value = params[:viewValue].to_i  
+    date = parse_datetime_from_client_booking( params[:focusDate])
+    date =   DateTime.new( date.year , 
+    date.month, 
+    date.day, 
+    0, 
+    0, 
+    0,
+    Rational( UTC_OFFSET , 24) )
+
+    if customer.nil?
+      @objects  = [] 
+      @total = 0 
+    else
+
+      starting_date = 0 
+      ending_date = 0 
+
+      if view_value == VIEW_VALUE[:week]
+        starting_date = date - date.wday.days 
+        ending_date = starting_date + 7.days  
+      elsif view_value == VIEW_VALUE[:month]
+        starting_date = date - date.mday.days 
+        days_in_month = Time.days_in_month(date.month, date.year)
+        ending_date = starting_date + days_in_month.days
+      end
+
+      if params[:parentRecordType] == 'user'
+        selectedParentRecordId = params[:selectedParentRecordId].to_i
+        @objects  =        Maintenance.active_objects.where{
+          (complaint_date.gte starting_date) & 
+          (complaint_date.lt ending_date ) & 
+          (user_id.eq  selectedParentRecordId ) & 
+          (customer_id.eq customer.id )
+          }.joins(:customer).page(params[:page]).per(params[:limit]).order("id DESC")
+
+
+        @total =        Maintenance.active_objects.where{
+          (complaint_date.gte starting_date) & 
+          (complaint_date.lt ending_date ) & 
+          (user_id.eq  selectedParentRecordId ) & 
+          (customer_id.eq customer.id )
+        }.count
+      end
+    end
+  end
+
+
   def index
     
     
     
     if params[:livesearch].present? 
-      livesearch = "%#{params[:livesearch]}%"
-      @objects = Maintenance.includes(:item).active_objects.where{ 
-        (
-          (name =~  livesearch ) | 
-          (code =~  livesearch )
-        )
-        
-      }.page(params[:page]).per(params[:limit]).order("id DESC")
-      
-      @total = Maintenance.includes(:item).active_objects.where{ 
-        (
-          (name =~  livesearch ) | 
-          (code =~  livesearch )
-        )
-      }.count
-      
-      # calendar
-      
+      build_livesearch_results
     elsif params[:parent_id].present?
       # @group_loan = Maintenance.find_by_id params[:parent_id]
       @objects = Maintenance.includes(:item).active_objects.
                   where(:customer_id => params[:parent_id]).
                   page(params[:page]).per(params[:limit]).order("id DESC")
       @total = Maintenance.includes(:item).active_objects.where(:customer_id => params[:parent_id]).count 
+    elsif params[:selectedRecordId].present? and params[:viewer] == 'personal'
+      build_personal_report_results # current_user scope 
+    elsif params[:selectedRecordId].present? and params[:viewer] == 'master'
+      if params[:companyView].present? and params[:companyView] == 'true'
+        build_master_report_company_perspective_results 
+      else
+        build_master_report_results 
+      end
     else
       @objects = []
       @total = 0 
@@ -239,13 +349,93 @@ class Api::MaintenancesController < Api::BaseApiController
     
     # render :json => { :records => @objects , :total => @total, :success => true }
   end
-end
-
-
+  
+  
 =begin
-
-maintenance_with_0_item_id = Maintenance.where(:item_id => 0 )
-
-maintenance_with_0_item_id.each {|x| x.item_id = x.customer.items.first.id ; x.save; }
-
+  Report specific 
 =end
+  def reports
+    render :json => {
+      :component_config => {
+            :title  => 'Panel dynamically loaded',
+            :html => "Awesome shite",
+            :xtype  => 'panel'
+         }
+    }
+    return 
+  end
+  
+  def prepare_params
+    view_value = params[:viewValue].to_i  
+    date = parse_datetime_from_client_booking( params[:focusDate])
+    date =   DateTime.new( date.year , 
+                              date.month, 
+                              date.day, 
+                              0, 
+                              0, 
+                              0,
+                  Rational( UTC_OFFSET , 24) )
+                  
+     
+    @starting_date = 0 
+    @ending_date = 0 
+    if view_value == VIEW_VALUE[:week]
+      @starting_date = date - date.wday.days 
+      @ending_date = @starting_date + 7.days  
+      
+    elsif view_value == VIEW_VALUE[:month]
+      @starting_date = date - date.mday.days 
+      
+      days_in_month = Time.days_in_month(date.month, date.year)
+      @ending_date = @starting_date + days_in_month.days
+    end
+     
+  end
+  
+  def customer_reports
+    prepare_params
+    
+    starting_date = @starting_date
+    ending_date = @ending_date
+    maintenances = []
+    if params[:viewer] == 'personal'
+      # personal view 
+      if params[:parentRecordType] == 'user'
+        puts "Inside viewer personal, parentType == user"
+        selectedRecordId = current_user.id
+        maintenances = Maintenance.active_objects.where{
+          (complaint_date.gte starting_date) & 
+          (complaint_date.lt ending_date ) & 
+          (user_id.eq selectedRecordId )
+        }
+        puts "Total maintenances: #{maintenances.count}"
+      end
+    elsif params[:viewer] == 'master'
+      puts "Inside viewer master"
+      if params[:parentRecordType] == 'user'
+        selectedRecordId = params[:selectedParentRecordId]
+        maintenances = Maintenance.active_objects.where{
+          (complaint_date.gte starting_date) & 
+          (complaint_date.lt ending_date ) & 
+          (user_id.eq selectedRecordId )
+        }
+      end
+    end
+    
+    customer_id_list = maintenances.collect {|x| x.customer_id}.uniq
+    
+    customers = Customer.where(:id => customer_id_list)
+    records = []
+    customers.each do |customer|
+      record = {}
+      record[:name] = customer.name 
+      record[:data1] = maintenances.where(:customer_id => customer.id).count 
+      record[:id] = customer.id 
+      
+      records << record
+    end
+    
+    
+    render :json => { :records => records , :total => records.count, :success => true }
+  end
+end

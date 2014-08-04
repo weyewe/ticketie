@@ -13,6 +13,8 @@ Ticketie::Application.routes.draw do
     get 'search_item' => 'items#search', :as => :search_item, :method => :get
     get 'search_customer' => 'customers#search', :as => :search_customer, :method => :get
     
+    get 'work_customer_reports' => 'maintenances#customer_reports', :as => :work_customer_reports
+    
     # master data 
     resources :app_users
     resources :customers 
