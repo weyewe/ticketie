@@ -55,7 +55,8 @@ class Api::MaintenancesController < Api::BaseApiController
         (complaint_date.gte starting_date) & 
         (complaint_date.lt ending_date ) & 
         (user_id.eq current_user_id ) & 
-        (customer_id.eq customer_id.id )
+        (customer_id.eq customer_id.id ) & 
+        (is_deleted.eq false )
       }.joins(:customer).page(params[:page]).per(params[:limit]).order("id DESC")
 
     
@@ -63,7 +64,8 @@ class Api::MaintenancesController < Api::BaseApiController
         (complaint_date.gte starting_date) & 
         (complaint_date.lt ending_date ) & 
         (user_id.eq current_user_id ) & 
-        (customer_id.eq customer_id.id )
+        (customer_id.eq customer_id.id ) & 
+        (is_deleted.eq false )
       }.count 
       
     end
@@ -104,7 +106,8 @@ class Api::MaintenancesController < Api::BaseApiController
           (complaint_date.gte starting_date) & 
           (complaint_date.lt ending_date ) & 
           (user_id.eq  selectedParentRecordId ) & 
-          (customer_id.eq customer.id )
+          (customer_id.eq customer.id ) & 
+          (is_deleted.eq false )
           }.joins(:customer).page(params[:page]).per(params[:limit]).order("id DESC")
 
 
@@ -112,7 +115,8 @@ class Api::MaintenancesController < Api::BaseApiController
           (complaint_date.gte starting_date) & 
           (complaint_date.lt ending_date ) & 
           (user_id.eq  selectedParentRecordId ) & 
-          (customer_id.eq customer.id )
+          (customer_id.eq customer.id ) & 
+          (is_deleted.eq false )
         }.count
       end
     end
