@@ -51,16 +51,16 @@ class Api::MaintenancesController < Api::BaseApiController
       end
       
       current_user_id = current_user.id 
-      @objects  =        Maintenance.active_objects.where{
+      @objects  =        Maintenance.active_objects.includes(:customer, :item).where{
         (complaint_date.gte starting_date) & 
         (complaint_date.lt ending_date ) & 
         (user_id.eq current_user_id ) & 
         (customer_id.eq customer_id.id ) & 
         (is_deleted.eq false )
-      }.joins(:customer).page(params[:page]).per(params[:limit]).order("id DESC")
+      }.page(params[:page]).per(params[:limit]).order("id DESC")
 
     
-      @total =            Maintenance.active_objects.where{
+      @total =            Maintenance.active_objects.includes(:customer, :item).where{
         (complaint_date.gte starting_date) & 
         (complaint_date.lt ending_date ) & 
         (user_id.eq current_user_id ) & 
@@ -102,16 +102,16 @@ class Api::MaintenancesController < Api::BaseApiController
 
       if params[:parentRecordType] == 'user'
         selectedParentRecordId = params[:selectedParentRecordId].to_i
-        @objects  =        Maintenance.active_objects.where{
+        @objects  =        Maintenance.active_objects.includes(:customer, :item).where{
           (complaint_date.gte starting_date) & 
           (complaint_date.lt ending_date ) & 
           (user_id.eq  selectedParentRecordId ) & 
           (customer_id.eq customer.id ) & 
           (is_deleted.eq false )
-          }.joins(:customer).page(params[:page]).per(params[:limit]).order("id DESC")
+          }.page(params[:page]).per(params[:limit]).order("id DESC")
 
 
-        @total =        Maintenance.active_objects.where{
+        @total =        Maintenance.active_objects.includes(:customer, :item).where{
           (complaint_date.gte starting_date) & 
           (complaint_date.lt ending_date ) & 
           (user_id.eq  selectedParentRecordId ) & 
@@ -421,7 +421,8 @@ class Api::MaintenancesController < Api::BaseApiController
         maintenances = Maintenance.active_objects.where{
           (complaint_date.gte starting_date) & 
           (complaint_date.lt ending_date ) & 
-          (user_id.eq selectedRecordId )
+          (user_id.eq selectedRecordId ) & 
+          (is_deleted.eq false )
         }
       end
     end
