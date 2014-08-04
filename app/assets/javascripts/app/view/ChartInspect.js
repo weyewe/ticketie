@@ -147,6 +147,11 @@ Ext.define('AM.view.ChartInspect', {
 		
 		getDurationText : function(){
 			var me = this; 
+			console.log("Inside getDurationText");
+			console.log("current focus date: ");
+			console.log( me.currentFocusDate );
+			console.log(me.currentFocusDate.getMonth() ); // month starts from 0 
+			
 			if(!me.currentFocusDate || !me.currentViewType){
 				return;
 			}
@@ -155,18 +160,23 @@ Ext.define('AM.view.ChartInspect', {
 			var endDate = '';
 			
 			if( me.currentViewType === 'week'){
+				console.log("currentViewType : week");
 				var numberOfDaysFromSunday = me.currentFocusDate.getDay(); 
 				var sundayDayNumber = me.currentFocusDate.getDate() - numberOfDaysFromSunday;
 				var saturdayDayNumber = sundayDayNumber + 6 ; 
 				
-				var sundayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth() -1 , sundayDayNumber );
-				var saturdayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth() -1 , saturdayDayNumber );
+				console.log("month: ");
+				console.log(me.currentFocusDate.getMonth() );
+				
+				var sundayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth() /*-1*/, sundayDayNumber );
+				var saturdayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth() /*-1 */ , saturdayDayNumber );
 				
 				return  Ext.Date.format( sundayDate, 'Y-m-d  ') + " to " + Ext.Date.format( saturdayDate, 'Y-m-d  ');
 				
 			}else if(me.currentViewType === 'month'){
-				var firstDayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth() -1 , 1 );
-				var lastDayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth()  , 0 );
+				console.log("currentViewType : month");
+				var firstDayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth()   , 1 );
+				var lastDayDate = new Date( me.currentFocusDate.getFullYear(), me.currentFocusDate.getMonth() + 1 , 0 );
 				
 				return  Ext.Date.format( firstDayDate, 'Y-m-d  ') + " to " + Ext.Date.format( lastDayDate, 'Y-m-d  ');
 			}

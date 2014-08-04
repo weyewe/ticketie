@@ -118,6 +118,8 @@ Ext.define('AM.controller.MasterReportEmployeeWorkCustomerReports', {
 		
 		var viewport = this.getViewport();
 		
+		console.log("currentFocusDate:");
+		console.log( Ext.Date.format( chart.currentFocusDate, 'Y-m-d H:i:s') );
 		list.store.getProxy().extraParams = {
 		    viewValue : viewValue,  // for the date 
 				selectedRecordId: result.items[0].get('id'), // for the perspective's object id 

@@ -12,6 +12,7 @@ Ext.define('AM.view.report.workcustomer.List' ,{
 				text : "Info",
 				flex : 1,
 				tpl : '<b>{code}</b>' + '<br />'  + 
+								'<b>{complaint_date}</b>' + '<br />'  +
 								'{complaint}' 
 			},
 			
